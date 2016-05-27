@@ -1,24 +1,11 @@
 package Sistema;
 
-public class Professor {
-	private int id;
-	private String senha;
-	private String nomeProfessor;
-	private String cpfProfessor;
-	private String matriculaProfessor;
+public class Professor extends Usuario{
 
-	public Professor(int id,String senha,String nomeProfessor,String cpfProfessor,String matriculaProfessor){
-		this.id=id;
-		this.senha=senha;
-		this.nomeProfessor=nomeProfessor;
-		this.cpfProfessor=cpfProfessor;
-		this.matriculaProfessor=matriculaProfessor;
+	public Professor(int id, String nome, String cpf, String senha, String email) {
+		super(id, nome, cpf, senha, email);
+		// TODO Auto-generated constructor stub
 	}
-		
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 }

@@ -16,7 +16,7 @@ public abstract class Usuario {
 
 
 	public Usuario(int id, String nome, String cpf, String senha, String email) {
-		this.idUsuario = id;
+		this.idUsuario = Usuario.numeroUsuario++;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
