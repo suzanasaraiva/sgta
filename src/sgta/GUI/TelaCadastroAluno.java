@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import sgta.Sistema.Aluno;
 import sgta.Sistema.Usuario;
-import sgta.Sistema.sgta;
+import sgta.Sistema.Sgta;
 import sgta.Repositorio.Repositorio;
 import sgta.Repositorio.IRepositorio;
 
@@ -128,7 +128,7 @@ public class TelaCadastroAluno extends JFrame {
 				String senha= jtfSenha.getText();
 				String email= jtfEmail.getText();
 				String matricula= jtfMatricula.getText();
-					sgta.adicionarAluno();
+					Sgta.adicionarAluno();
 			
 				
 					}

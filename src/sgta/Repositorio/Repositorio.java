@@ -29,35 +29,6 @@ public class Repositorio {
 			e.printStackTrace();
 		}
 	}
-	public ArrayList<Usuario> buscarSQL(String query) {
-		ArrayList<Usuario> res = new ArrayList<Usuario>();
-		try {
-			rs = stm.executeQuery(query);
-			String tipo = rs.getString("tipo");
-			while (rs.next()) {
-				if (tipo.equals("Aluno")) {
-					res.add(new Aluno(rs.getInt("id"),rs.getString("nome"),rs.getString("cpf"),
-							rs.getString("senha"),rs.getString("email"), rs.getString("matricula")));
-					
-				
-					
-				} else if (tipo.equals("Professor")) {
-					res.add(new Professor(rs.getInt("id"),rs.getString("nome"),rs.getString("cpf"),
-							rs.getString("senha"),rs.getString("email"), rs.getString("matricula")));
-					
-				} else if (tipo.equals("Administrador")) {
-					res.add(new Administrador(rs.getInt("id"),rs.getString("nome"),rs.getString("cpf"),
-							rs.getString("senha"),rs.getString("email"), rs.getString("matricula")));
-					
-				
-				}
-			}
-			return res;
-		} catch (SQLException e) {
-			return null;
-		}
-}
-
 	
 	public boolean adicionarAluno(Aluno aluno) {
 		try {
