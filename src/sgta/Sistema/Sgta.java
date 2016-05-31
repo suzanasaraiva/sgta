@@ -42,6 +42,7 @@ public class Sgta implements ISgta {
 		return Sgta.instance;
 	}
 	
+	@Override
 	public int proximoId(){
 		try {
 			return repositorio.proximoId();
@@ -52,37 +53,21 @@ public class Sgta implements ISgta {
 		return 0;
 	}
 
+	@Override
 	public void adicionarAluno(int id, String nome, String cpf, String senha, String email, String matricula) {
 		Aluno aluno = new Aluno(id, nome, cpf, senha, email, matricula);
 		repositorio.adicionarAluno(aluno);
 	}
 
-	public void adicionarProfessor(String nome, String cpf, String senha, String email, String matricula) {
-		Professor professor = new Professor(nome, cpf, senha, email, matricula);
-		repositorio.adicionarProfessor(professor);
-	}
-
-	public void adicionarAdministrador(String nome, String cpf, String senha, String email, String matricula) {
-		Administrador administrador = new Administrador(nome, cpf, senha, email, matricula);
-		repositorio.adicionarAdministrador(administrador);
-	}
-
-	public static void adicionarAluno() {
-		// TODO Auto-generated method stub
-
-	}
-
-
 	@Override
 	public void adicionarPofessor(int id, String nome, String cpf, String senha, String email, String matricula) {
-		// TODO Auto-generated method stub
-		
+		Professor professor = new Professor(id, nome, cpf, senha, email, matricula);
+		repositorio.adicionarProfessor(professor);
 	}
 
 	@Override
 	public void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) {
-		// TODO Auto-generated method stub
-		
+		Administrador administrador = new Administrador(id, nome, cpf, senha, email, matricula);
+		repositorio.adicionarAdministrador(administrador);
 	}
-
 }

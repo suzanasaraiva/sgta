@@ -2,7 +2,7 @@ package sgta.Sistema;
 
 public class Usuario {
 	/**
-	 * Contador de instâncias
+	 * Contador de instï¿½ncias
 	 */
 	private static int numeroUsuario = 0;
 
@@ -14,21 +14,8 @@ public class Usuario {
 	protected String matricula;
 	
 
-
-	public Usuario(String nome, String cpf, String senha, String email,String matricula) {
-		this.idUsuario = Usuario.numeroUsuario++;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.senha = senha;
-		this.senha = senha;
-		this.email = email;
-		this.matricula= matricula;
-		
-		
-	}
-	
 	public Usuario(int id, String nome, String cpf, String senha, String email,String matricula) {
-		this.idUsuario = Usuario.numeroUsuario++;
+		this.idUsuario = id;
 		this.nome = nome;
 		this.cpf = cpf;
 		this.senha = senha;
