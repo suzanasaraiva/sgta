@@ -12,11 +12,11 @@ public class Oportunidades {
 	protected String descricao;
 	protected String tipo_bolsa;
 	protected int valor_bolsa;
-	protected Date duração;
+	protected Date duracao;
 	protected String requisitos;
 	
 	public Oportunidades(int idOportunidade, int idOrientador, int num_vagas, int num_vagas_restantes, String descricao,
-			String tipo_bolsa, int valor_bolsa, Date duração, String requisitos) {
+			String tipo_bolsa, int valor_bolsa, Date duracao, String requisitos) {
 		super();
 		this.idOportunidade = idOportunidade;
 		this.idProfessor = idOrientador;
@@ -25,11 +25,11 @@ public class Oportunidades {
 		this.descricao = descricao;
 		this.tipo_bolsa = tipo_bolsa;
 		this.valor_bolsa = valor_bolsa;
-		this.duração = duração;
+		this.duracao = duracao;
 		this.requisitos = requisitos;
 	}
 	public Oportunidades( int idOrientador, int num_vagas, int num_vagas_restantes, String descricao,
-			String tipo_bolsa, int valor_bolsa, Date duração, String requisitos) {
+			String tipo_bolsa, int valor_bolsa, Date duracao, String requisitos) {
 		super();
 		this.idOportunidade = Oportunidades.numOportunidades++;
 		this.idProfessor = idOrientador;
@@ -38,7 +38,7 @@ public class Oportunidades {
 		this.descricao = descricao;
 		this.tipo_bolsa = tipo_bolsa;
 		this.valor_bolsa = valor_bolsa;
-		this.duração = duração;
+		this.duracao = duracao;
 		this.requisitos = requisitos;
 	}
 	

@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import sgta.Sistema.Aluno;
+import sgta.Sistema.ISgta;
+import sgta.Sistema.InicializacaoSistemaException;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Sgta;
 import sgta.Repositorio.Repositorio;
@@ -122,13 +124,18 @@ public class TelaCadastroAluno extends JFrame {
 		btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String  id= jtfId.getText();
 				String nome = jtfNome.getText();
 				String cpf = jtfCpf.getText();
 				String senha= jtfSenha.getText();
 				String email= jtfEmail.getText();
 				String matricula= jtfMatricula.getText();
-					Sgta.adicionarAluno();
+					try {
+						ISgta sgta = Sgta.getInstance();
+						sgta.adicionarAluno(sgta.proximoId(), nome, cpf, senha, email, matricula);
+					} catch (InicializacaoSistemaException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 			
 				
 					}
