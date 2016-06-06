@@ -1,28 +1,44 @@
 package sgta.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
+import sgta.Repositorio.DuplicatedUserException;
+import sgta.Repositorio.RepositorioException;
+import sgta.Sistema.ISgta;
+import sgta.Sistema.InicializacaoSistemaException;
+import sgta.Sistema.Sgta;
+import sgta.util.EmailValidator;
+import sgta.util.Message;
+
 import javax.swing.JLabel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import java.awt.Color;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
-import javax.swing.JMenuBar;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Font;
-import javax.swing.SwingConstants;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
 
 public class TelaCadastro extends JFrame {
 
-	private JPanel contentPane;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JTextField nameTextField;
+	private JTextField cpfTextField;
+	private JTextField emailTextField;
+	private JPasswordField passwordField;
+	private JPasswordField confirmPasswordField;
+	private JRadioButton rdbtnAluno;
+	private JRadioButton rdbtnProfessor;
 
 	/**
 	 * Launch the application.
@@ -44,82 +60,133 @@ public class TelaCadastro extends JFrame {
 	 * Create the frame.
 	 */
 	public TelaCadastro() {
-		setTitle("Cadastro");
+		setTitle("Cadastro de Professor");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 865, 567);
-		contentPane = new JPanel();
-		contentPane.setBackground(Color.GRAY);
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		setBounds(100, 100, 378, 410);
+		getContentPane().setLayout(null);
+
+		JLabel label = new JLabel("Nome");
+		label.setBounds(40, 91, 94, 16);
+		getContentPane().add(label);
+
+		nameTextField = new JTextField();
+		nameTextField.setColumns(10);
+		nameTextField.setBounds(169, 88, 139, 22);
+		getContentPane().add(nameTextField);
+
+		JLabel lblCpf = new JLabel("CPF");
+		lblCpf.setBounds(40, 126, 94, 16);
+		getContentPane().add(lblCpf);
 		
+		MaskFormatter txtFormatCpf;
+		try {
+			txtFormatCpf = new MaskFormatter("###.###.###-##");
+			cpfTextField = new JFormattedTextField(txtFormatCpf);
+			cpfTextField.setColumns(10);
+			cpfTextField.setBounds(169, 123, 139, 22);
+		} catch (ParseException e1) {
+			JOptionPane.showMessageDialog(null,
+					"Ocorreu um problema na formatacao.");
+		}
+		getContentPane().add(cpfTextField);
+		
+
+		JLabel label_2 = new JLabel("Email");
+		label_2.setBounds(40, 161, 94, 16);
+		getContentPane().add(label_2);
+
+		emailTextField = new JTextField();
+		emailTextField.setColumns(10);
+		emailTextField.setBounds(169, 158, 139, 22);
+		getContentPane().add(emailTextField);
+	
+		JLabel label_3 = new JLabel("Senha");
+		label_3.setBounds(40, 196, 56, 16);
+		getContentPane().add(label_3);
+
+		passwordField = new JPasswordField();
+		passwordField.setBounds(169, 193, 139, 22);
+		getContentPane().add(passwordField);
+
+		JLabel label_4 = new JLabel("Confirma Senha");
+		label_4.setBounds(40, 231, 117, 16);
+		getContentPane().add(label_4);
+
+		confirmPasswordField = new JPasswordField();
+		confirmPasswordField.setBounds(169, 228, 139, 22);
+		getContentPane().add(confirmPasswordField);
+
+		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				String nome = nameTextField.getText();
+				String cpf = cpfTextField.getText();
+				String email = emailTextField.getText();
+				String senha = String.valueOf(passwordField.getPassword());
+				String confirma = String.valueOf(confirmPasswordField.getPassword());
+				
+				if (nome.isEmpty() || cpf.equals("   .   .   -  ") || email.isEmpty() || senha.isEmpty() || confirma.isEmpty()) {
+					Message.infoBox("Todos os campos devem ser preenchidos!", "Formulário invalido");
+				} else if (!EmailValidator.isValid(email)) {
+					Message.infoBox("Email invalido!", "Formulário invalido");
+				} else if (senha.length() < 6) {
+					Message.infoBox("Sua senha deve conter no minimo 6 caracteres!", "Formulário invalido");
+				} else if (!senha.equals(confirma)) {
+					Message.infoBox("As senhas devem ser iguais!", "Formulário invalido");
+				}
+				try {
+					ISgta sgta = Sgta.getInstance();
+					if (rdbtnAluno.isSelected()) {
+						sgta.adicionarAluno(sgta.proximoId(), nome, cpf, senha, email, cpf);
+					} else {
+						sgta.adicionarProfessor(sgta.proximoId(), nome, cpf, senha, email, cpf);
+					}
+					Message.infoBox("Usuario cadastrado com sucesso!", "Cadastro Completo");
+					/*TelaLogin volta  = new TelaLogin();
+					volta.setVisible(true);
+					dispose();*/
+				} catch (InicializacaoSistemaException e1) {
+					Message.infoBox("Erro ao inicializar o sistema!", "Erro Sistema");
+				} catch (DuplicatedUserException e1) {
+					Message.infoBox("Ja existe um usuario com esse CPF!", "Erro Sistema");
+				} catch (RepositorioException e1) {
+					Message.infoBox("Erro ao se conectar com o servidor!", "Erro Sistema");
+				} 
+			}
+		});
+
+		btnCadastrar.setBounds(63, 318, 105, 25);
+		getContentPane().add(btnCadastrar);
+
 		JButton btnVoltar = new JButton("Voltar");
-		btnVoltar.setBackground(Color.LIGHT_GRAY);
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaLogin volta  = new TelaLogin();
 				volta.setVisible(true);
 				dispose();
 			}
+
 		});
-		btnVoltar.setBounds(716, 470, 97, 25);
-		contentPane.add(btnVoltar);
+
+		btnVoltar.setBounds(206, 318, 114, 25);
+		getContentPane().add(btnVoltar);
+
+		JLabel label_6 = new JLabel("Insira seus dados");
+		label_6.setBounds(21, 41, 149, 16);
+		getContentPane().add(label_6);
 		
-		JButton btnNewButton = new JButton("Aluno");
-		btnNewButton.setBackground(Color.LIGHT_GRAY);
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaCadastroAluno tela1= new TelaCadastroAluno();
-					tela1.setVisible(true);
-					dispose();
-				
-			}
-		});
-		btnNewButton.setBounds(106, 309, 82, 34);
-		contentPane.add(btnNewButton);
+		rdbtnAluno = new JRadioButton("Aluno");
+		rdbtnAluno.setBounds(40, 272, 141, 23);
+		rdbtnAluno.isSelected();
+		getContentPane().add(rdbtnAluno);
 		
-		JButton btnNewButton_1 = new JButton("Professor");
-		btnNewButton_1.setBackground(Color.LIGHT_GRAY);
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaCadastroProfessor tela2= new TelaCadastroProfessor();
-				tela2.setVisible(true);
-				dispose();
-			
-				
-			}
-		});
-		btnNewButton_1.setBounds(364, 383, 113, 34);
-		contentPane.add(btnNewButton_1);
+		rdbtnProfessor = new JRadioButton("Professor");
+		rdbtnProfessor.setBounds(179, 272, 141, 23);
+		getContentPane().add(rdbtnProfessor);
 		
-		JButton btnNewButton_2 = new JButton("Admnistrador");
-		btnNewButton_2.setBackground(Color.LIGHT_GRAY);
-		btnNewButton_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaCadastroAdministrador tela3= new TelaCadastroAdministrador();
-				tela3.setVisible(true);
-				dispose();
-			
-			}
-		});
-		btnNewButton_2.setBounds(619, 295, 113, 34);
-		contentPane.add(btnNewButton_2);
-		
-		JLabel lblProfessor = new JLabel("PROFESSOR");
-		lblProfessor.setIcon(new ImageIcon("C:\\Users\\Suzana\\Pictures\\Imagens projeto\\professor.png"));
-		lblProfessor.setFont(new Font("Tahoma", Font.PLAIN, 19));
-		lblProfessor.setBounds(295, 114, 274, 256);
-		contentPane.add(lblProfessor);
-		
-		JLabel lblAdministrador = new JLabel("ADMINISTRADOR");
-		lblAdministrador.setIcon(new ImageIcon("C:\\Users\\Suzana\\Pictures\\Imagens projeto\\Usu\u00E1rio.png"));
-		lblAdministrador.setFont(new Font("Tahoma", Font.PLAIN, 19));
-		lblAdministrador.setBounds(557, -3, 263, 301);
-		contentPane.add(lblAdministrador);
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Suzana\\Pictures\\Imagens projeto\\Aluno.png"));
-		lblNewLabel.setBounds(23, 49, 271, 263);
-		contentPane.add(lblNewLabel);
+		ButtonGroup group = new ButtonGroup();
+	    group.add(rdbtnAluno);
+	    group.add(rdbtnProfessor);
 	}
 }

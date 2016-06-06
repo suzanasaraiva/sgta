@@ -3,7 +3,7 @@ package sgta.Repositorio;
 public class RepositorioException extends Exception {
 
 	/**
-	 * Lançada quando há um problema na conexão com o banco de dados.
+	 * Lancada quando ha um problema na conexao com o banco de dados.
 	 */
 	private static final long serialVersionUID = 1L;
 

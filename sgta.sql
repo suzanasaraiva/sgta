@@ -1,22 +1,24 @@
 /*
-Navicat MySQL Data Transfer
+ Navicat MySQL Data Transfer
 
-Source Server         : SGTA
-Source Server Version : 100113
-Source Host           : localhost:3306
-Source Database       : sgta
+ Source Server         : Connection
+ Source Server Type    : MySQL
+ Source Server Version : 50620
+ Source Host           : localhost
+ Source Database       : sgta
 
-Target Server Type    : MYSQL
-Target Server Version : 100113
-File Encoding         : 65001
+ Target Server Type    : MySQL
+ Target Server Version : 50620
+ File Encoding         : utf-8
 
-Date: 2016-05-30 17:36:57
+ Date: 06/06/2016 18:25:09 PM
 */
 
-SET FOREIGN_KEY_CHECKS=0;
+SET NAMES utf8;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for agenda
+--  Table structure for `agenda`
 -- ----------------------------
 DROP TABLE IF EXISTS `agenda`;
 CREATE TABLE `agenda` (
@@ -28,7 +30,7 @@ CREATE TABLE `agenda` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for arquivos
+--  Table structure for `arquivos`
 -- ----------------------------
 DROP TABLE IF EXISTS `arquivos`;
 CREATE TABLE `arquivos` (
@@ -38,7 +40,7 @@ CREATE TABLE `arquivos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for banca
+--  Table structure for `banca`
 -- ----------------------------
 DROP TABLE IF EXISTS `banca`;
 CREATE TABLE `banca` (
@@ -51,7 +53,7 @@ CREATE TABLE `banca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for convites
+--  Table structure for `convites`
 -- ----------------------------
 DROP TABLE IF EXISTS `convites`;
 CREATE TABLE `convites` (
@@ -64,7 +66,7 @@ CREATE TABLE `convites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for mensagens
+--  Table structure for `mensagens`
 -- ----------------------------
 DROP TABLE IF EXISTS `mensagens`;
 CREATE TABLE `mensagens` (
@@ -75,7 +77,7 @@ CREATE TABLE `mensagens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for oportunidades
+--  Table structure for `oportunidades`
 -- ----------------------------
 DROP TABLE IF EXISTS `oportunidades`;
 CREATE TABLE `oportunidades` (
@@ -92,7 +94,7 @@ CREATE TABLE `oportunidades` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for orientador_trabalhos
+--  Table structure for `orientador_trabalhos`
 -- ----------------------------
 DROP TABLE IF EXISTS `orientador_trabalhos`;
 CREATE TABLE `orientador_trabalhos` (
@@ -101,7 +103,7 @@ CREATE TABLE `orientador_trabalhos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for publicacoes
+--  Table structure for `publicacoes`
 -- ----------------------------
 DROP TABLE IF EXISTS `publicacoes`;
 CREATE TABLE `publicacoes` (
@@ -117,7 +119,7 @@ CREATE TABLE `publicacoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for resultados
+--  Table structure for `resultados`
 -- ----------------------------
 DROP TABLE IF EXISTS `resultados`;
 CREATE TABLE `resultados` (
@@ -127,7 +129,16 @@ CREATE TABLE `resultados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for trabalhos
+--  Table structure for `trabalho_arquivos`
+-- ----------------------------
+DROP TABLE IF EXISTS `trabalho_arquivos`;
+CREATE TABLE `trabalho_arquivos` (
+  `id_trabalho` int(11) NOT NULL,
+  `id_arquivo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `trabalhos`
 -- ----------------------------
 DROP TABLE IF EXISTS `trabalhos`;
 CREATE TABLE `trabalhos` (
@@ -139,16 +150,7 @@ CREATE TABLE `trabalhos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for trabalho_arquivos
--- ----------------------------
-DROP TABLE IF EXISTS `trabalho_arquivos`;
-CREATE TABLE `trabalho_arquivos` (
-  `id_trabalho` int(11) NOT NULL,
-  `id_arquivo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Table structure for usuarios
+--  Table structure for `usuarios`
 -- ----------------------------
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
@@ -159,5 +161,7 @@ CREATE TABLE `usuarios` (
   `CPF` varchar(253) NOT NULL,
   `email` varchar(253) NOT NULL,
   `tipo` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`,`Matricula`,`CPF`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+SET FOREIGN_KEY_CHECKS = 1;

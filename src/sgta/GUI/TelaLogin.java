@@ -1,6 +1,5 @@
 package sgta.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,6 +16,10 @@ import javax.swing.JTextField;
 
 public class TelaLogin extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -51,7 +54,7 @@ public class TelaLogin extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon(TelaLogin.class.getResource("/imagens/Logo Principal.png")));
+		label.setIcon(new ImageIcon("imagens/Logo.png"));
 		label.setBounds(0, 81, 265, 103);
 		contentPane.add(label);
 		
@@ -75,7 +78,7 @@ public class TelaLogin extends JFrame {
 					tela.setVisible(true);
 					dispose();
 			}else
-				JOptionPane.showMessageDialog(rootPane, "Senha ou Usuário Inválidos");
+				JOptionPane.showMessageDialog(rootPane, "Senha ou Usuario Invalido!");
 			}
 		});
 		btnNewButton_1.setBounds(356, 210, 145, 25);

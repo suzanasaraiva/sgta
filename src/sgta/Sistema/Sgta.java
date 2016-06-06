@@ -1,5 +1,6 @@
 package sgta.Sistema;
 
+import sgta.Repositorio.DuplicatedUserException;
 import sgta.Repositorio.Repositorio;
 import sgta.Repositorio.RepositorioException;
 import sgta.Sistema.InicializacaoSistemaException;
@@ -54,20 +55,20 @@ public class Sgta implements ISgta {
 	}
 
 	@Override
-	public void adicionarAluno(int id, String nome, String cpf, String senha, String email, String matricula) {
+	public void adicionarAluno(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException {
 		Aluno aluno = new Aluno(id, nome, cpf, senha, email, matricula);
-		repositorio.adicionarAluno(aluno);
+		repositorio.adicionarUsuario(aluno);
 	}
 
 	@Override
-	public void adicionarPofessor(int id, String nome, String cpf, String senha, String email, String matricula) {
+	public void adicionarProfessor(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException {
 		Professor professor = new Professor(id, nome, cpf, senha, email, matricula);
-		repositorio.adicionarProfessor(professor);
+		repositorio.adicionarUsuario(professor);
 	}
 
 	@Override
-	public void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) {
+	public void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException {
 		Administrador administrador = new Administrador(id, nome, cpf, senha, email, matricula);
-		repositorio.adicionarAdministrador(administrador);
+		repositorio.adicionarUsuario(administrador);
 	}
 }
