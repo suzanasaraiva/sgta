@@ -22,26 +22,23 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 
 
 public class TelaCadastroAluno extends JFrame {
 	private JPanel contentPane;
-	private JTextField jtfId;
-	private JTextField jtfSenha;
-	private JTextField jtfCpf;
-	private JLabel lblId;
+	private JTextField jtfnome;
+	private JTextField jtfcpf;
 	private JLabel lblNome;
 	private JLabel lblNewLabel;
-	private JTextField jtfNome;
-	private JLabel lblSenha;
+	private JTextField jtfemail;
 	private JLabel lblNewLabel_1;
-	private JTextField jtfEmail;
 	private JLabel lblInsiraOsDados;
 	private JButton btnCadastrar;
 	private JButton btnSair;
-	private JLabel label;
-	private JTextField jtfMatricula;
+	private JPasswordField passwordFieldsenha;
+	private JPasswordField passwordFieldconfirma;
 
 	/**
 	 * Launch the application.
@@ -71,51 +68,32 @@ public class TelaCadastroAluno extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		jtfId = new JTextField();
-		jtfId.setBounds(147, 69, 139, 22);
-		contentPane.add(jtfId);
-		jtfId.setColumns(10);
+		jtfnome = new JTextField();
+		jtfnome.setBounds(163, 82, 139, 22);
+		contentPane.add(jtfnome);
+		jtfnome.setColumns(10);
 		
-		jtfSenha = new JTextField();
-		jtfSenha.setBounds(147, 107, 139, 22);
-		contentPane.add(jtfSenha);
-		jtfSenha.setColumns(10);
-		
-		jtfCpf = new JTextField();
-		jtfCpf.setBounds(147, 177, 139, 22);
-		contentPane.add(jtfCpf);
-		jtfCpf.setColumns(10);
-		
-		lblId = new JLabel("Id");
-		lblId.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblId.setBounds(52, 60, 94, 39);
-		contentPane.add(lblId);
+		jtfcpf = new JTextField();
+		jtfcpf.setBounds(163, 117, 139, 22);
+		contentPane.add(jtfcpf);
+		jtfcpf.setColumns(10);
 		
 		lblNome = new JLabel("Nome");
-		lblNome.setBounds(52, 145, 94, 16);
+		lblNome.setBounds(57, 85, 94, 16);
 		contentPane.add(lblNome);
 		
 		lblNewLabel = new JLabel("Cpf");
-		lblNewLabel.setBounds(52, 180, 94, 16);
+		lblNewLabel.setBounds(57, 120, 94, 16);
 		contentPane.add(lblNewLabel);
 		
-		jtfNome = new JTextField();
-		jtfNome.setBounds(147, 142, 139, 22);
-		contentPane.add(jtfNome);
-		jtfNome.setColumns(10);
-		
-		lblSenha = new JLabel("Senha");
-		lblSenha.setBounds(52, 110, 114, 16);
-		contentPane.add(lblSenha);
+		jtfemail = new JTextField();
+		jtfemail.setBounds(163, 152, 139, 22);
+		contentPane.add(jtfemail);
+		jtfemail.setColumns(10);
 		
 		lblNewLabel_1 = new JLabel("Email");
-		lblNewLabel_1.setBounds(52, 215, 94, 16);
+		lblNewLabel_1.setBounds(57, 158, 94, 16);
 		contentPane.add(lblNewLabel_1);
-		
-		jtfEmail = new JTextField();
-		jtfEmail.setBounds(147, 212, 139, 22);
-		contentPane.add(jtfEmail);
-		jtfEmail.setColumns(10);
 		
 		lblInsiraOsDados = new JLabel("Insira seus dados");
 		lblInsiraOsDados.setBounds(17, 31, 149, 16);
@@ -124,14 +102,14 @@ public class TelaCadastroAluno extends JFrame {
 		btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String nome = jtfNome.getText();
-				String cpf = jtfCpf.getText();
-				String senha= jtfSenha.getText();
-				String email= jtfEmail.getText();
-				String matricula= jtfMatricula.getText();
+				String nome = jtfnome.getText();
+				String cpf = jtfcpf.getText();
+				String email= jtfemail.getText();
+				String senha= passwordFieldsenha.getText();
+				String confirma= passwordFieldconfirma.getText();
 					try {
 						ISgta sgta = Sgta.getInstance();
-						sgta.adicionarAluno(sgta.proximoId(), nome, cpf, senha, email, matricula);
+						sgta.adicionarAluno(sgta.proximoId(), nome, cpf, senha, email, cpf);
 					} catch (InicializacaoSistemaException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -140,7 +118,7 @@ public class TelaCadastroAluno extends JFrame {
 				
 					}
 		});
-		btnCadastrar.setBounds(52, 295, 114, 30);
+		btnCadastrar.setBounds(41, 279, 114, 30);
 		contentPane.add(btnCadastrar);
 		
 		btnSair = new JButton("Voltar");
@@ -151,16 +129,23 @@ public class TelaCadastroAluno extends JFrame {
 				dispose();
 			}
 		});
-		btnSair.setBounds(205, 295, 114, 30);
+		btnSair.setBounds(204, 279, 114, 30);
 		contentPane.add(btnSair);
 		
-		label = new JLabel("Matr\u00EDcula");
-		label.setBounds(52, 251, 94, 16);
-		contentPane.add(label);
+		passwordFieldsenha = new JPasswordField();
+		passwordFieldsenha.setBounds(163, 187, 139, 22);
+		contentPane.add(passwordFieldsenha);
 		
-		jtfMatricula = new JTextField();
-		jtfMatricula.setColumns(10);
-		jtfMatricula.setBounds(147, 249, 139, 22);
-		contentPane.add(jtfMatricula);
+		passwordFieldconfirma = new JPasswordField();
+		passwordFieldconfirma.setBounds(163, 222, 139, 22);
+		contentPane.add(passwordFieldconfirma);
+		
+		JLabel lblSenha = new JLabel("Senha");
+		lblSenha.setBounds(57, 190, 56, 16);
+		contentPane.add(lblSenha);
+		
+		JLabel lblConfirmaSenha = new JLabel("Confirma Senha");
+		lblConfirmaSenha.setBounds(52, 225, 94, 16);
+		contentPane.add(lblConfirmaSenha);
 	}
 }
