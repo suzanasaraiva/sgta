@@ -11,7 +11,7 @@
  Target Server Version : 50620
  File Encoding         : utf-8
 
- Date: 06/06/2016 18:25:09 PM
+ Date: 06/06/2016 20:02:04 PM
 */
 
 SET NAMES utf8;
@@ -161,7 +161,9 @@ CREATE TABLE `usuarios` (
   `CPF` varchar(253) NOT NULL,
   `email` varchar(253) NOT NULL,
   `tipo` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`,`Matricula`,`CPF`)
+  PRIMARY KEY (`id`,`CPF`,`Matricula`),
+  UNIQUE KEY `CPF` (`CPF`) USING HASH,
+  UNIQUE KEY `Matricula` (`Matricula`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;

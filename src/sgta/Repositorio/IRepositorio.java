@@ -19,6 +19,8 @@ public interface IRepositorio {
 
 	ArrayList<Usuario> buscarId(int id);
 
+	Usuario buscarCPF(String cpf) throws RepositorioException, UsuarioInexistente;
+
 	boolean adicionarTrabalho(Trabalhos trabalho);
 
 	boolean removerTrabalho(int id);
@@ -31,4 +33,5 @@ public interface IRepositorio {
 
 	ArrayList<Trabalhos> buscarTrabalho();
 
+	public int proximoId() throws RepositorioException;
 }

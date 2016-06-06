@@ -143,9 +143,9 @@ public class TelaCadastro extends JFrame {
 						sgta.adicionarProfessor(sgta.proximoId(), nome, cpf, senha, email, cpf);
 					}
 					Message.infoBox("Usuario cadastrado com sucesso!", "Cadastro Completo");
-					/*TelaLogin volta  = new TelaLogin();
+					TelaLogin volta  = new TelaLogin();
 					volta.setVisible(true);
-					dispose();*/
+					dispose();
 				} catch (InicializacaoSistemaException e1) {
 					Message.infoBox("Erro ao inicializar o sistema!", "Erro Sistema");
 				} catch (DuplicatedUserException e1) {
@@ -178,7 +178,7 @@ public class TelaCadastro extends JFrame {
 		
 		rdbtnAluno = new JRadioButton("Aluno");
 		rdbtnAluno.setBounds(40, 272, 141, 23);
-		rdbtnAluno.isSelected();
+		rdbtnAluno.setSelected(true);
 		getContentPane().add(rdbtnAluno);
 		
 		rdbtnProfessor = new JRadioButton("Professor");

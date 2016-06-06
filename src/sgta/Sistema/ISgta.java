@@ -2,6 +2,7 @@ package sgta.Sistema;
 
 import sgta.Repositorio.DuplicatedUserException;
 import sgta.Repositorio.RepositorioException;
+import sgta.Repositorio.UsuarioInexistente;
 
 public interface ISgta {
 
@@ -10,6 +11,8 @@ public interface ISgta {
 	void adicionarProfessor(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException;
 
 	void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException;
+	
+	Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente;
 
 	int proximoId();
 }

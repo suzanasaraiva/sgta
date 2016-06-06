@@ -1,13 +1,15 @@
 package sgta.Sistema;
 
 import sgta.Repositorio.DuplicatedUserException;
+import sgta.Repositorio.IRepositorio;
 import sgta.Repositorio.Repositorio;
 import sgta.Repositorio.RepositorioException;
+import sgta.Repositorio.UsuarioInexistente;
 import sgta.Sistema.InicializacaoSistemaException;
 import sgta.Sistema.ISgta;
 
 public class Sgta implements ISgta {
-	private Repositorio repositorio;
+	private IRepositorio repositorio;
 	
 	private static ISgta instance;
 	
@@ -26,7 +28,6 @@ public class Sgta implements ISgta {
 		try {
 			ISgta i = Sgta.getInstance();
 		} catch (InicializacaoSistemaException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -70,5 +71,11 @@ public class Sgta implements ISgta {
 	public void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException {
 		Administrador administrador = new Administrador(id, nome, cpf, senha, email, matricula);
 		repositorio.adicionarUsuario(administrador);
+	}
+
+
+	@Override
+	public Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente {
+		return repositorio.buscarCPF(cpf);
 	}
 }

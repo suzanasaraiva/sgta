@@ -4,7 +4,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+import sgta.Repositorio.RepositorioException;
+import sgta.Repositorio.UsuarioInexistente;
+import sgta.Sistema.InicializacaoSistemaException;
+import sgta.Sistema.Sgta;
+import sgta.Sistema.Usuario;
+import sgta.util.Message;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -21,8 +30,8 @@ public class TelaLogin extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField emailTextField;
+	private JPasswordField passwordTextField;
 
 	/**
 	 * Launch the application.
@@ -52,54 +61,76 @@ public class TelaLogin extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel label = new JLabel("");
 		label.setIcon(new ImageIcon("imagens/Logo.png"));
 		label.setBounds(0, 81, 265, 103);
 		contentPane.add(label);
-		
+
 		JButton btnNewButton = new JButton("Novo Cadastro");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				TelaCadastro tela2 = new TelaCadastro();
 				tela2.setVisible(true);
 				dispose();
-		}
+			}
 		});
 		btnNewButton.setBounds(203, 210, 145, 25);
 		contentPane.add(btnNewButton);
-		
+
 		JButton btnNewButton_1 = new JButton("Acessar");
 		btnNewButton_1.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
-				if(textField.getText().equals("admin")&& textField_1.getText().equals("1234")){
-					TelaPrincipal tela = new TelaPrincipal();
-					tela.setVisible(true);
-					dispose();
-			}else
-				JOptionPane.showMessageDialog(rootPane, "Senha ou Usuario Invalido!");
+				String cpf = emailTextField.getText();
+				String password = String.valueOf(passwordTextField.getPassword());
+
+				try {
+					Usuario user = Sgta.getInstance().buscarUsuarioPorCPF(cpf);
+
+					if (cpf.equals("admin") && password.equals("1234")) {
+						TelaPrincipal tela = new TelaPrincipal();
+						tela.setVisible(true);
+						dispose();
+					} else if (cpf.isEmpty() || password.isEmpty()) {
+						Message.infoBox("Por favor, preencha todos os campos!", "Erro");
+					} else if (user.getSenha().equals(password)) {
+
+						System.out.println("Logado usuario comum!");
+						TelaPrincipal tela = new TelaPrincipal();
+						tela.setVisible(true);
+						dispose();
+					} else {
+						JOptionPane.showMessageDialog(rootPane, "Senha Invalida!");
+					}
+				} catch (RepositorioException | InicializacaoSistemaException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UsuarioInexistente e) {
+					JOptionPane.showMessageDialog(rootPane, "Usuario Invalido!");
+				}
+
 			}
 		});
 		btnNewButton_1.setBounds(356, 210, 145, 25);
 		contentPane.add(btnNewButton_1);
-		
-		JLabel lblId = new JLabel("ID:");
+
+		JLabel lblId = new JLabel("Email:");
 		lblId.setBounds(301, 87, 42, 16);
 		contentPane.add(lblId);
-		
+
 		JLabel lblSenha = new JLabel("Senha:");
 		lblSenha.setBounds(301, 136, 47, 16);
 		contentPane.add(lblSenha);
-		
-		textField = new JTextField();
-		textField.setBounds(350, 84, 129, 22);
-		contentPane.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setBounds(350, 133, 129, 22);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+
+		emailTextField = new JTextField();
+		emailTextField.setBounds(350, 84, 129, 22);
+		contentPane.add(emailTextField);
+		emailTextField.setColumns(10);
+
+		passwordTextField = new JPasswordField();
+		passwordTextField.setBounds(350, 133, 129, 22);
+		contentPane.add(passwordTextField);
+		passwordTextField.setColumns(10);
 	}
 }

@@ -3,6 +3,7 @@ package sgta.Repositorio;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
 import sgta.Sistema.Professor;
+import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Administrador;
 
 import java.sql.Connection;
@@ -13,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.*;
 
-public class Repositorio {
+public class Repositorio implements IRepositorio {
 	Connection conn;
 	Statement stm;
 	ResultSet rs;
@@ -31,6 +32,7 @@ public class Repositorio {
 		}
 	}
 
+	@Override
 	public int proximoId() throws RepositorioException {
 		ArrayList<Usuario> re = buscarSQL("SELECT * FROM  usuarios ORDER BY id DESC");
 		if (re.size() == 0) {
@@ -64,19 +66,24 @@ public class Repositorio {
 		}
 	}
 
+	@Override
 	public boolean adicionarUsuario(Usuario usuario) throws DuplicatedUserException, RepositorioException {
 		try {
 			stm.executeUpdate("INSERT INTO Usuarios (id, Nome, CPF, Senha,  email, Matricula, tipo) VALUES" + "('"
 					+ usuario.getIdUsuario() + "', '" + usuario.getNome() + "', '" + usuario.getCpf() + "', '"
 					+ usuario.getSenha() + "', '" + usuario.getEmail() + "', '" + usuario.getMatricula() + "', '"
 					+ usuario.getClass().getSimpleName() + "')");
+		} catch (SQLIntegrityConstraintViolationException e2) {
+			throw new DuplicatedUserException();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			if (e.getErrorCode() == 2601) {
 				throw new DuplicatedUserException();
 			} else {
 				throw new RepositorioException();
 			}
 		}
+
 		return true;
 	}
 
@@ -88,6 +95,70 @@ public class Repositorio {
 			return false;
 		}
 
+	}
+
+	@Override
+	public boolean atualizar(int id, Usuario Usuario) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<Usuario> buscarNome(String nome) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Usuario> buscarId(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean adicionarTrabalho(Trabalhos trabalho) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removerTrabalho(int id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public ArrayList<Trabalhos> buscarTrabalhoTitulo(String titulo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Trabalhos> buscarTrabalhoAutor(String idUsuario) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Trabalhos> buscarTrabalhoTema(String tema) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Trabalhos> buscarTrabalho() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Usuario buscarCPF(String cpf) throws RepositorioException, UsuarioInexistente {
+		ArrayList<Usuario> results = buscarSQL("SELECT * FROM  usuarios WHERE CPF Like '" + cpf + "'");
+		if (results.size() < 1) { 
+			throw new UsuarioInexistente();
+		}
+		
+		return results.get(0);
 	}
 
 }
