@@ -7,12 +7,18 @@ public class Mensagens {
 	public final int idMenasagem;
 	public final int idRementente;
 	public final int idDestinatario;
+	protected String assunto;
 	
-	public Mensagens(int idMenasagem, int idRementente, int idDestinatario) {
+	boolean isRead() {
+		return false;
+	}
+	
+	public Mensagens(int idMenasagem, int idRementente, int idDestinatario,String Assunto) {
 		super();
 		this.idMenasagem = idMenasagem;
 		this.idRementente = idRementente;
 		this.idDestinatario = idDestinatario;
+		this.assunto = assunto;
 	}
 	
 	
@@ -20,7 +26,29 @@ public class Mensagens {
 		this.idMenasagem = Mensagens.numeroMensagens++;
 		this.idRementente = idRementente;
 		this.idDestinatario = idDestinatario;
+		this.assunto = assunto;
 	}
+
+	public String getAssunto() {
+		return assunto;
+	}
+
+	public void setAssunto(String assunto) {
+		this.assunto = assunto;
+	}
+
+	public int getIdMenasagem() {
+		return idMenasagem;
+	}
+
+	public int getIdRementente() {
+		return idRementente;
+	}
+
+	public int getIdDestinatario() {
+		return idDestinatario;
+	}
+	
 	
 
 
