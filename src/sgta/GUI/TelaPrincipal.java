@@ -13,6 +13,8 @@ import javax.swing.JMenu;
 import javax.swing.JLabel;
 import javax.swing.JCheckBoxMenuItem;
 import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaPrincipal extends JFrame {
 
@@ -58,6 +60,17 @@ public class TelaPrincipal extends JFrame {
 		
 		JMenu mnMensagens = new JMenu("Mensagens");
 		menuBar.add(mnMensagens);
+		
+		JMenuItem mntmEnviar = new JMenuItem("Enviar");
+		mntmEnviar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaEnviarMensagens telamensagens = new TelaEnviarMensagens();
+				telamensagens.setVisible(true);
+				dispose();
+			
+			}
+		});
+		mnMensagens.add(mntmEnviar);
 		
 		JMenuItem mntmRecebidas = new JMenuItem("Recebidas");
 		mnMensagens.add(mntmRecebidas);

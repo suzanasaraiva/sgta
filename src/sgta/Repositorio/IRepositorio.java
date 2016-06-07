@@ -1,5 +1,6 @@
 package sgta.Repositorio;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import sgta.Sistema.Aluno;
@@ -32,6 +33,7 @@ public interface IRepositorio {
 	ArrayList<Trabalhos> buscarTrabalhoTema(String tema);
 
 	ArrayList<Trabalhos> buscarTrabalho();
+
 
 	public int proximoId() throws RepositorioException;
 }

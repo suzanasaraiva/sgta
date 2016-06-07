@@ -23,6 +23,35 @@ private static int numeroTrabalhos = 0;
 		this.area = area;
 		this.idUsuario = idUsuario;
 	}
+
+	public int length() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public int getIdTrabalho() {
+		return idTrabalho;
+	}
+
+	public int getIdUsuario() {
+		return idUsuario;
+	}
 	
 	
 }

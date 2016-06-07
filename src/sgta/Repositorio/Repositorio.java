@@ -1,5 +1,5 @@
 package sgta.Repositorio;
-
+import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
 import sgta.Sistema.Professor;
@@ -12,6 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 
 public class Repositorio implements IRepositorio {
@@ -86,6 +90,7 @@ public class Repositorio implements IRepositorio {
 
 		return true;
 	}
+	
 
 	public boolean remover(int id) {
 		try {
@@ -160,5 +165,6 @@ public class Repositorio implements IRepositorio {
 		
 		return results.get(0);
 	}
+
 
 }

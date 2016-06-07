@@ -63,7 +63,7 @@ public class TelaLogin extends JFrame {
 		contentPane.setLayout(null);
 
 		JLabel label = new JLabel("");
-		label.setIcon(new ImageIcon("imagens/Logo.png"));
+		label.setIcon(new ImageIcon("C:\\Users\\Suzana\\git\\sgta\\imagens\\Logo.png"));
 		label.setBounds(0, 81, 265, 103);
 		contentPane.add(label);
 
@@ -75,7 +75,7 @@ public class TelaLogin extends JFrame {
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(203, 210, 145, 25);
+		btnNewButton.setBounds(200, 227, 145, 25);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Acessar");
@@ -112,11 +112,11 @@ public class TelaLogin extends JFrame {
 
 			}
 		});
-		btnNewButton_1.setBounds(356, 210, 145, 25);
+		btnNewButton_1.setBounds(357, 227, 145, 25);
 		contentPane.add(btnNewButton_1);
 
-		JLabel lblId = new JLabel("Email:");
-		lblId.setBounds(301, 87, 42, 16);
+		JLabel lblId = new JLabel("CPF:");
+		lblId.setBounds(306, 87, 42, 16);
 		contentPane.add(lblId);
 
 		JLabel lblSenha = new JLabel("Senha:");

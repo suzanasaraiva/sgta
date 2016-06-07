@@ -1,5 +1,7 @@
 package sgta.Sistema;
 
+import java.io.File;
+
 import sgta.Repositorio.DuplicatedUserException;
 import sgta.Repositorio.IRepositorio;
 import sgta.Repositorio.Repositorio;
@@ -16,7 +18,7 @@ public class Sgta implements ISgta {
 	public Sgta() throws InicializacaoSistemaException {
 		try {
 			this.repositorio = new Repositorio( 
-					"jdbc:mysql://localhost:3306/sgta", "root", "senha");
+					"jdbc:mysql://localhost:3306/sgta", "root", "");
 			System.out.println(this.proximoId());
 		} catch (RepositorioException e) {
 			throw new InicializacaoSistemaException();
@@ -78,4 +80,6 @@ public class Sgta implements ISgta {
 	public Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarCPF(cpf);
 	}
-}
+
+	}
+
