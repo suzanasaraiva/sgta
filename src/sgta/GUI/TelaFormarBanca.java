@@ -1,6 +1,5 @@
 package sgta.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -22,6 +21,7 @@ public class TelaFormarBanca extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TelaFormarBanca frame = new TelaFormarBanca();

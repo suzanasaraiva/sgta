@@ -1,11 +1,8 @@
 package sgta.Repositorio;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import sgta.Sistema.Aluno;
 import sgta.Sistema.Mensagem;
-import sgta.Sistema.Professor;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 
@@ -22,6 +19,8 @@ public interface IRepositorio {
 	ArrayList<Usuario> buscarId(int id);
 
 	Usuario buscarCPF(String cpf) throws RepositorioException, UsuarioInexistente;
+	
+	Usuario buscarEmail(String email) throws RepositorioException, UsuarioInexistente;
 
 	boolean adicionarTrabalho(Trabalhos trabalho);
 
@@ -35,7 +34,11 @@ public interface IRepositorio {
 
 	ArrayList<Trabalhos> buscarTrabalho();
 
-	boolean adicionarMensagem(Mensagem mensagem) throws RepositorioException, DuplicatedUserException;
+	boolean adicionarMensagem(Mensagem mensagem) throws RepositorioException;
 
 	public int proximoId() throws RepositorioException;
+	
+	public int proximoMensagemId() throws RepositorioException;
+	
+	ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario) throws RepositorioException, NaoExisteMensagensException;
 }

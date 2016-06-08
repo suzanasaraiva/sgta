@@ -45,6 +45,7 @@ public class TelaCadastro extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TelaCadastro frame = new TelaCadastro();
@@ -116,6 +117,7 @@ public class TelaCadastro extends JFrame {
 
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				String nome = nameTextField.getText();
@@ -161,6 +163,7 @@ public class TelaCadastro extends JFrame {
 
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				TelaLogin volta = new TelaLogin();
 				volta.setVisible(true);

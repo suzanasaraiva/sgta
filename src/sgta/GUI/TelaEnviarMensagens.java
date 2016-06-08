@@ -1,23 +1,33 @@
 package sgta.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import sgta.Repositorio.RepositorioException;
+import sgta.Repositorio.UsuarioInexistente;
+import sgta.Sistema.ISgta;
+import sgta.Sistema.InicializacaoSistemaException;
+import sgta.Sistema.Mensagem;
+import sgta.Sistema.Sgta;
+import sgta.util.Message;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.JTextArea;
 
 public class TelaEnviarMensagens extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JTextArea mensagemTextField;
+	private JTextField destTextField;
+	private JTextField assuntoTextField;
 	private JButton btnCancelar;
 
 	/**
@@ -25,6 +35,7 @@ public class TelaEnviarMensagens extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TelaEnviarMensagens frame = new TelaEnviarMensagens();
@@ -50,27 +61,52 @@ public class TelaEnviarMensagens extends JFrame {
 		
 		JButton btnEnviarMensagem = new JButton("Enviar ");
 		btnEnviarMensagem.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				String email = destTextField.getText();
+				String assunto = assuntoTextField.getText();
+				String mensagem = mensagemTextField.getText();
+				email = "luiz@gmail.com";
+				if (email.isEmpty() || assunto.isEmpty() || mensagem.isEmpty()) {
+					Message.infoBox("Por favor, preencha todos os campos!", "Erro");
+					return;
+				}
+				
+				try {
+					ISgta sgta = Sgta.getInstance();
+					int idDestinatario = sgta.buscarUsuarioPorEmail(email).getIdUsuario();
+					sgta.adicionarMensagem(new Mensagem(sgta.proximoMensagemId(), Sgta.usuario.getIdUsuario(), idDestinatario, assunto, mensagem, false));
+					Message.infoBox("Mensagem enviada com sucesso!", "Mensagem Sucesso");
+					TelaPrincipal tela = new TelaPrincipal();
+					tela.setVisible(true);
+					dispose();
+				} catch (RepositorioException e1) {
+					Message.infoBox("Erro ao se conectar com o servidor", "Erro");
+				} catch (UsuarioInexistente e1) {
+					Message.infoBox("Destinatario nao existe", "Erro");
+			  } catch (InicializacaoSistemaException e1) {
+					Message.infoBox("Erro", "Erro");
+				}
 			}
 		});
 		btnEnviarMensagem.setBounds(94, 333, 121, 25);
 		contentPane.add(btnEnviarMensagem);
 		
-		textField = new JTextField();
-		textField.setBounds(25, 114, 571, 206);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		mensagemTextField = new JTextArea();
+		mensagemTextField.setBounds(25, 114, 571, 206);
+		contentPane.add(mensagemTextField);
+		mensagemTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(132, 45, 464, 22);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		destTextField = new JTextField();
+		destTextField.setBounds(132, 45, 464, 22);
+		contentPane.add(destTextField);
+		destTextField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(132, 79, 464, 22);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		assuntoTextField = new JTextField();
+		assuntoTextField.setBounds(132, 79, 464, 22);
+		contentPane.add(assuntoTextField);
+		assuntoTextField.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Destinatario:");
 		lblNewLabel.setBounds(43, 48, 77, 16);
@@ -81,8 +117,14 @@ public class TelaEnviarMensagens extends JFrame {
 		contentPane.add(lblNewLabel_1);
 		
 		btnCancelar = new JButton("Cancelar");
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaPrincipal tela = new TelaPrincipal();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		btnCancelar.setBounds(418, 333, 121, 25);
 		contentPane.add(btnCancelar);
 	}
-
 }

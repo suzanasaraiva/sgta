@@ -1,16 +1,19 @@
 package sgta.Sistema;
 
-import java.io.File;
+import java.util.ArrayList;
 
 import sgta.Repositorio.DuplicatedUserException;
 import sgta.Repositorio.IRepositorio;
+import sgta.Repositorio.NaoExisteMensagensException;
 import sgta.Repositorio.Repositorio;
 import sgta.Repositorio.RepositorioException;
 import sgta.Repositorio.UsuarioInexistente;
 import sgta.Sistema.InicializacaoSistemaException;
+import sgta.util.Message;
 import sgta.Sistema.ISgta;
 
 public class Sgta implements ISgta {
+	
 	private IRepositorio repositorio;
 
 	private static ISgta instance;
@@ -19,7 +22,7 @@ public class Sgta implements ISgta {
 
 	public Sgta() throws InicializacaoSistemaException {
 		try {
-			this.repositorio = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "");
+			this.repositorio = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
 			System.out.println(this.proximoId());
 		} catch (RepositorioException e) {
 			throw new InicializacaoSistemaException();
@@ -47,14 +50,13 @@ public class Sgta implements ISgta {
 	}
 
 	@Override
-	public int proximoId() {
-		try {
-			return repositorio.proximoId();
-		} catch (RepositorioException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
+	public int proximoId() throws RepositorioException {	
+		return repositorio.proximoId();
+	}
+	
+	@Override
+	public int proximoMensagemId() throws RepositorioException {	
+		return repositorio.proximoId();
 	}
 
 	@Override
@@ -82,11 +84,44 @@ public class Sgta implements ISgta {
 	public Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarCPF(cpf);
 	}
+	
+	@Override
+	public Usuario buscarUsuarioPorEmail(String email) throws RepositorioException, UsuarioInexistente {
+		return repositorio.buscarEmail(email);
+	}
 
 	@Override
-	public void adicionarMensagem(Mensagem mensagem) throws RepositorioException, DuplicatedUserException {
+	public void adicionarMensagem(Mensagem mensagem) throws RepositorioException {
 		repositorio.adicionarMensagem(mensagem);
 
+	}
+
+	@Override
+	public int quantitadeMensagens() throws RepositorioException {
+		try {
+			int total = 0;
+			ArrayList<Mensagem> mensagens = this.repositorio.buscarMensagensDestinatario(Sgta.usuario.idUsuario);
+			for (Mensagem mensagem : mensagens) {
+				if (!mensagem.isRead()) {
+					total++;
+				}
+			}
+			return total;
+		} catch (NaoExisteMensagensException e) {
+			return 0;
+		}
+	}
+
+	@Override
+	public ArrayList<Mensagem> buscarMensagensDestinatario() throws RepositorioException {
+		ArrayList<Mensagem> resultado;
+		try {
+			resultado = repositorio.buscarMensagensDestinatario(Sgta.usuario.getIdUsuario());
+		} catch (NaoExisteMensagensException e) {
+			resultado = new ArrayList<Mensagem>();
+			Message.infoBox("Nao existe mensagens para voce", "Erro");
+		}
+		return resultado;
 	}
 
 }

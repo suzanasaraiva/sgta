@@ -1,17 +1,11 @@
 package sgta.GUI;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
-import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
-import javax.swing.JLabel;
-import javax.swing.JCheckBoxMenuItem;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -23,6 +17,7 @@ public class TelaPrincipal extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TelaPrincipal frame = new TelaPrincipal();
@@ -63,6 +58,7 @@ public class TelaPrincipal extends JFrame {
 		
 		JMenuItem mntmEnviar = new JMenuItem("Enviar");
 		mntmEnviar.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				TelaEnviarMensagens telamensagens = new TelaEnviarMensagens();
 				telamensagens.setVisible(true);
@@ -73,6 +69,13 @@ public class TelaPrincipal extends JFrame {
 		mnMensagens.add(mntmEnviar);
 		
 		JMenuItem mntmRecebidas = new JMenuItem("Recebidas");
+		mntmRecebidas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaMensagensRecebidas telamensagens = new TelaMensagensRecebidas();
+				telamensagens.setVisible(true);
+				dispose();
+			}
+		});
 		mnMensagens.add(mntmRecebidas);
 		
 		JMenuItem mntmEnviadas = new JMenuItem("Enviadas");
@@ -110,6 +113,7 @@ public class TelaPrincipal extends JFrame {
 		
 		JMenuItem mntmFormarBanca = new JMenuItem("Formar Banca");
 		mntmFormarBanca.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				TelaFormarBanca telabanca = new TelaFormarBanca();
 				telabanca.setVisible(true);
