@@ -84,9 +84,6 @@ public class TelaPrincipal extends JFrame {
 		JMenuItem mntmSubmeter = new JMenuItem("Submeter");
 		mnTrabalhos.add(mntmSubmeter);
 		
-		JMenuItem mntmGerenciar = new JMenuItem("Gerenciar");
-		mnTrabalhos.add(mntmGerenciar);
-		
 		JMenuItem mntmBuscar = new JMenuItem("Buscar");
 		mnTrabalhos.add(mntmBuscar);
 		
@@ -112,6 +109,14 @@ public class TelaPrincipal extends JFrame {
 		menuBar.add(mnBanca);
 		
 		JMenuItem mntmFormarBanca = new JMenuItem("Formar Banca");
+		mntmFormarBanca.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				TelaFormarBanca telabanca = new TelaFormarBanca();
+				telabanca.setVisible(true);
+				dispose();
+			
+			}
+		});
 		mnBanca.add(mntmFormarBanca);
 		
 		JMenuItem mntmAvaliarTrabalhos = new JMenuItem("Avaliar Trabalhos");

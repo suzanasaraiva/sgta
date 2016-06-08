@@ -80,6 +80,7 @@ public class Sgta implements ISgta {
 	public Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarCPF(cpf);
 	}
+	
 
 	}
 

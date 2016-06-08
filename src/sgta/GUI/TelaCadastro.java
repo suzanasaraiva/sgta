@@ -77,7 +77,7 @@ public class TelaCadastro extends JFrame {
 		JLabel lblCpf = new JLabel("CPF");
 		lblCpf.setBounds(40, 126, 94, 16);
 		getContentPane().add(lblCpf);
-		
+
 		MaskFormatter txtFormatCpf;
 		try {
 			txtFormatCpf = new MaskFormatter("###.###.###-##");
@@ -85,11 +85,9 @@ public class TelaCadastro extends JFrame {
 			cpfTextField.setColumns(10);
 			cpfTextField.setBounds(169, 123, 139, 22);
 		} catch (ParseException e1) {
-			JOptionPane.showMessageDialog(null,
-					"Ocorreu um problema na formatacao.");
+			JOptionPane.showMessageDialog(null, "Ocorreu um problema na formatacao.");
 		}
 		getContentPane().add(cpfTextField);
-		
 
 		JLabel label_2 = new JLabel("Email");
 		label_2.setBounds(40, 161, 94, 16);
@@ -99,7 +97,7 @@ public class TelaCadastro extends JFrame {
 		emailTextField.setColumns(10);
 		emailTextField.setBounds(169, 158, 139, 22);
 		getContentPane().add(emailTextField);
-	
+
 		JLabel label_3 = new JLabel("Senha");
 		label_3.setBounds(40, 196, 56, 16);
 		getContentPane().add(label_3);
@@ -125,8 +123,9 @@ public class TelaCadastro extends JFrame {
 				String email = emailTextField.getText();
 				String senha = String.valueOf(passwordField.getPassword());
 				String confirma = String.valueOf(confirmPasswordField.getPassword());
-				
-				if (nome.isEmpty() || cpf.equals("   .   .   -  ") || email.isEmpty() || senha.isEmpty() || confirma.isEmpty()) {
+
+				if (nome.isEmpty() || cpf.equals("   .   .   -  ") || email.isEmpty() || senha.isEmpty()
+						|| confirma.isEmpty()) {
 					Message.infoBox("Todos os campos devem ser preenchidos!", "Formulário invalido");
 				} else if (!EmailValidator.isValid(email)) {
 					Message.infoBox("Email invalido!", "Formulário invalido");
@@ -134,25 +133,26 @@ public class TelaCadastro extends JFrame {
 					Message.infoBox("Sua senha deve conter no minimo 6 caracteres!", "Formulário invalido");
 				} else if (!senha.equals(confirma)) {
 					Message.infoBox("As senhas devem ser iguais!", "Formulário invalido");
-				}
-				try {
-					ISgta sgta = Sgta.getInstance();
-					if (rdbtnAluno.isSelected()) {
-						sgta.adicionarAluno(sgta.proximoId(), nome, cpf, senha, email, cpf);
-					} else {
-						sgta.adicionarProfessor(sgta.proximoId(), nome, cpf, senha, email, cpf);
+				} else {
+					try {
+						ISgta sgta = Sgta.getInstance();
+						if (rdbtnAluno.isSelected()) {
+							sgta.adicionarAluno(sgta.proximoId(), nome, cpf, senha, email, cpf);
+						} else {
+							sgta.adicionarProfessor(sgta.proximoId(), nome, cpf, senha, email, cpf);
+						}
+						Message.infoBox("Usuario cadastrado com sucesso!", "Cadastro Completo");
+						TelaLogin volta = new TelaLogin();
+						volta.setVisible(true);
+						dispose();
+					} catch (InicializacaoSistemaException e1) {
+						Message.infoBox("Erro ao inicializar o sistema!", "Erro Sistema");
+					} catch (DuplicatedUserException e1) {
+						Message.infoBox("Ja existe um usuario com esse CPF!", "Erro Sistema");
+					} catch (RepositorioException e1) {
+						Message.infoBox("Erro ao se conectar com o servidor!", "Erro Sistema");
 					}
-					Message.infoBox("Usuario cadastrado com sucesso!", "Cadastro Completo");
-					TelaLogin volta  = new TelaLogin();
-					volta.setVisible(true);
-					dispose();
-				} catch (InicializacaoSistemaException e1) {
-					Message.infoBox("Erro ao inicializar o sistema!", "Erro Sistema");
-				} catch (DuplicatedUserException e1) {
-					Message.infoBox("Ja existe um usuario com esse CPF!", "Erro Sistema");
-				} catch (RepositorioException e1) {
-					Message.infoBox("Erro ao se conectar com o servidor!", "Erro Sistema");
-				} 
+				}
 			}
 		});
 
@@ -162,7 +162,7 @@ public class TelaCadastro extends JFrame {
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaLogin volta  = new TelaLogin();
+				TelaLogin volta = new TelaLogin();
 				volta.setVisible(true);
 				dispose();
 			}
@@ -175,18 +175,18 @@ public class TelaCadastro extends JFrame {
 		JLabel label_6 = new JLabel("Insira seus dados");
 		label_6.setBounds(21, 41, 149, 16);
 		getContentPane().add(label_6);
-		
+
 		rdbtnAluno = new JRadioButton("Aluno");
 		rdbtnAluno.setBounds(40, 272, 141, 23);
 		rdbtnAluno.setSelected(true);
 		getContentPane().add(rdbtnAluno);
-		
+
 		rdbtnProfessor = new JRadioButton("Professor");
 		rdbtnProfessor.setBounds(179, 272, 141, 23);
 		getContentPane().add(rdbtnProfessor);
-		
+
 		ButtonGroup group = new ButtonGroup();
-	    group.add(rdbtnAluno);
-	    group.add(rdbtnProfessor);
+		group.add(rdbtnAluno);
+		group.add(rdbtnProfessor);
 	}
 }
