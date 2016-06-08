@@ -1,24 +1,22 @@
 /*
- Navicat MySQL Data Transfer
+Navicat MySQL Data Transfer
 
- Source Server         : Connection
- Source Server Type    : MySQL
- Source Server Version : 50620
- Source Host           : localhost
- Source Database       : sgta
+Source Server         : SGTA
+Source Server Version : 100113
+Source Host           : localhost:3306
+Source Database       : sgta
 
- Target Server Type    : MySQL
- Target Server Version : 50620
- File Encoding         : utf-8
+Target Server Type    : MYSQL
+Target Server Version : 100113
+File Encoding         : 65001
 
- Date: 06/06/2016 20:02:04 PM
+Date: 2016-06-08 17:46:34
 */
 
-SET NAMES utf8;
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
---  Table structure for `agenda`
+-- Table structure for agenda
 -- ----------------------------
 DROP TABLE IF EXISTS `agenda`;
 CREATE TABLE `agenda` (
@@ -30,7 +28,11 @@ CREATE TABLE `agenda` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `arquivos`
+-- Records of agenda
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for arquivos
 -- ----------------------------
 DROP TABLE IF EXISTS `arquivos`;
 CREATE TABLE `arquivos` (
@@ -40,7 +42,11 @@ CREATE TABLE `arquivos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `banca`
+-- Records of arquivos
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for banca
 -- ----------------------------
 DROP TABLE IF EXISTS `banca`;
 CREATE TABLE `banca` (
@@ -53,7 +59,11 @@ CREATE TABLE `banca` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `convites`
+-- Records of banca
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for convites
 -- ----------------------------
 DROP TABLE IF EXISTS `convites`;
 CREATE TABLE `convites` (
@@ -66,18 +76,27 @@ CREATE TABLE `convites` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `mensagens`
+-- Records of convites
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for mensagens
 -- ----------------------------
 DROP TABLE IF EXISTS `mensagens`;
 CREATE TABLE `mensagens` (
-  `id_mensagens` int(11) NOT NULL,
-  `id_remetente` int(11) NOT NULL,
-  `id_destinatario` int(11) NOT NULL,
-  PRIMARY KEY (`id_mensagens`)
+  `id_Mensagens` int(11) NOT NULL,
+  `id_Remetente` int(11) NOT NULL,
+  `id_Destinatario` int(11) NOT NULL,
+  `Assunto` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_Mensagens`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `oportunidades`
+-- Records of mensagens
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for oportunidades
 -- ----------------------------
 DROP TABLE IF EXISTS `oportunidades`;
 CREATE TABLE `oportunidades` (
@@ -94,7 +113,11 @@ CREATE TABLE `oportunidades` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `orientador_trabalhos`
+-- Records of oportunidades
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for orientador_trabalhos
 -- ----------------------------
 DROP TABLE IF EXISTS `orientador_trabalhos`;
 CREATE TABLE `orientador_trabalhos` (
@@ -103,7 +126,11 @@ CREATE TABLE `orientador_trabalhos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `publicacoes`
+-- Records of orientador_trabalhos
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for publicacoes
 -- ----------------------------
 DROP TABLE IF EXISTS `publicacoes`;
 CREATE TABLE `publicacoes` (
@@ -119,7 +146,11 @@ CREATE TABLE `publicacoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `resultados`
+-- Records of publicacoes
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for resultados
 -- ----------------------------
 DROP TABLE IF EXISTS `resultados`;
 CREATE TABLE `resultados` (
@@ -129,16 +160,11 @@ CREATE TABLE `resultados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `trabalho_arquivos`
+-- Records of resultados
 -- ----------------------------
-DROP TABLE IF EXISTS `trabalho_arquivos`;
-CREATE TABLE `trabalho_arquivos` (
-  `id_trabalho` int(11) NOT NULL,
-  `id_arquivo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `trabalhos`
+-- Table structure for trabalhos
 -- ----------------------------
 DROP TABLE IF EXISTS `trabalhos`;
 CREATE TABLE `trabalhos` (
@@ -150,7 +176,24 @@ CREATE TABLE `trabalhos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
---  Table structure for `usuarios`
+-- Records of trabalhos
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for trabalho_arquivos
+-- ----------------------------
+DROP TABLE IF EXISTS `trabalho_arquivos`;
+CREATE TABLE `trabalho_arquivos` (
+  `id_trabalho` int(11) NOT NULL,
+  `id_arquivo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of trabalho_arquivos
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for usuarios
 -- ----------------------------
 DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
@@ -161,9 +204,12 @@ CREATE TABLE `usuarios` (
   `CPF` varchar(253) NOT NULL,
   `email` varchar(253) NOT NULL,
   `tipo` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`,`CPF`,`Matricula`),
+  PRIMARY KEY (`id`,`Matricula`,`CPF`,`email`),
+  UNIQUE KEY `Matricula` (`Matricula`) USING HASH,
   UNIQUE KEY `CPF` (`CPF`) USING HASH,
-  UNIQUE KEY `Matricula` (`Matricula`) USING HASH
+  UNIQUE KEY `email` (`email`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Records of usuarios
+-- ----------------------------
