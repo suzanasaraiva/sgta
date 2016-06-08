@@ -14,5 +14,9 @@ public interface ISgta {
 	
 	Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente;
 
+	void adicionarMensagem(Mensagem mensagem) throws RepositorioException, DuplicatedUserException;
+	
+	
+	
 	int proximoId();
 }

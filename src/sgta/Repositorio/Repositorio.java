@@ -2,6 +2,7 @@ package sgta.Repositorio;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
+import sgta.Sistema.Mensagem;
 import sgta.Sistema.Professor;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Administrador;
@@ -164,6 +165,26 @@ public class Repositorio implements IRepositorio {
 		}
 		
 		return results.get(0);
+	}
+
+	@Override
+	public boolean adicionarMensagem(Mensagem mensagem) throws RepositorioException, DuplicatedUserException {
+		try {
+			stm.executeUpdate("INSERT INTO Mensagens (id_Mensagens, id_Remetente, id_Destinatario, Assunto) VALUES" + "('"
+					+ mensagem.getIdMenasagem() + "', '" + mensagem.getIdRementente() + "', '" + mensagem.getIdDestinatario() 
+					+ "', '" + mensagem.getAssunto() + "')");
+		} catch (SQLIntegrityConstraintViolationException e2) {
+			throw new DuplicatedUserException();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			if (e.getErrorCode() == 2601) {
+				throw new DuplicatedUserException();
+			} else {
+				throw new RepositorioException();
+			}
+		}
+
+		return true;
 	}
 
 

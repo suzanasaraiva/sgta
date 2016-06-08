@@ -1,6 +1,6 @@
 package sgta.Sistema;
 
-public class Mensagens {
+public class Mensagem {
 
 	private static int numeroMensagens = 0;
 	
@@ -13,7 +13,7 @@ public class Mensagens {
 		return false;
 	}
 	
-	public Mensagens(int idMenasagem, int idRementente, int idDestinatario,String Assunto) {
+	public Mensagem(int idMenasagem, int idRementente, int idDestinatario,String Assunto) {
 		super();
 		this.idMenasagem = idMenasagem;
 		this.idRementente = idRementente;
@@ -22,8 +22,8 @@ public class Mensagens {
 	}
 	
 	
-	public Mensagens (int idRementente, int idDestinatario) {
-		this.idMenasagem = Mensagens.numeroMensagens++;
+	public Mensagem (int idRementente, int idDestinatario) {
+		this.idMenasagem = Mensagem.numeroMensagens++;
 		this.idRementente = idRementente;
 		this.idDestinatario = idDestinatario;
 		this.assunto = assunto;
@@ -48,8 +48,4 @@ public class Mensagens {
 	public int getIdDestinatario() {
 		return idDestinatario;
 	}
-	
-	
-
-
 }

@@ -84,7 +84,6 @@ public class TelaLogin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String cpf = emailTextField.getText();
 				String password = String.valueOf(passwordTextField.getPassword());
-				System.out.println("aaaaash");
 				if (cpf.equals("000.000.000-00") && password.equals("1234")) {
 					TelaPrincipal tela = new TelaPrincipal();
 					tela.setVisible(true);
@@ -93,6 +92,7 @@ public class TelaLogin extends JFrame {
 				}
 				try {
 					Usuario user = Sgta.getInstance().buscarUsuarioPorCPF(cpf);
+					Sgta.usuario = user;
 					System.out.println(cpf);
 					if (cpf.isEmpty() || password.isEmpty()) {
 						Message.infoBox("Por favor, preencha todos os campos!", "Erro");

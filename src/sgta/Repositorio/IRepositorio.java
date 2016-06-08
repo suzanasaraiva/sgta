@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import sgta.Sistema.Aluno;
+import sgta.Sistema.Mensagem;
 import sgta.Sistema.Professor;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
@@ -34,6 +35,7 @@ public interface IRepositorio {
 
 	ArrayList<Trabalhos> buscarTrabalho();
 
+	boolean adicionarMensagem(Mensagem mensagem) throws RepositorioException, DuplicatedUserException;
 
 	public int proximoId() throws RepositorioException;
 }
