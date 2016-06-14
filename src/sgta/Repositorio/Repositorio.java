@@ -1,9 +1,9 @@
 package sgta.Repositorio;
-
+import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
+import sgta.Sistema.Mensagem;
 import sgta.Sistema.Professor;
-import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Administrador;
 
 import java.sql.Connection;
@@ -34,7 +34,17 @@ public class Repositorio implements IRepositorio {
 
 	@Override
 	public int proximoId() throws RepositorioException {
-		ArrayList<Usuario> re = buscarSQL("SELECT * FROM  usuarios ORDER BY id DESC");
+		ArrayList<Usuario> re = buscarSQL("SELECT * FROM usuarios ORDER BY id DESC");
+		if (re.size() == 0) {
+			return 0;
+		} else {
+			return re.get(0).getIdUsuario() + 1;
+		}
+	}
+	
+	@Override
+	public int proximoMensagemId() throws RepositorioException {
+		ArrayList<Usuario> re = buscarSQL("SELECT * FROM  mensagens ORDER BY id DESC");
 		if (re.size() == 0) {
 			return 0;
 		} else {
@@ -65,6 +75,21 @@ public class Repositorio implements IRepositorio {
 			throw new RepositorioException();
 		}
 	}
+	
+	private ArrayList<Mensagem> buscarSQLMensagem(String query) throws RepositorioException {
+		ArrayList<Mensagem> res = new ArrayList<Mensagem>();
+		try {
+			rs = stm.executeQuery(query);
+			while (rs.next()) {
+				res.add(new Mensagem(rs.getInt("id_Mensagens"), rs.getInt("id_Remetente"), rs.getInt("id_Destinatario"),
+						rs.getString("assunto"), rs.getString("mensagem"), rs.getInt("isRead") == 1));
+			}
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+	}
 
 	@Override
 	public boolean adicionarUsuario(Usuario usuario) throws DuplicatedUserException, RepositorioException {
@@ -86,7 +111,9 @@ public class Repositorio implements IRepositorio {
 
 		return true;
 	}
+	
 
+	@Override
 	public boolean remover(int id) {
 		try {
 			stm.executeUpdate("REMOVE * FROM usuario WHERE id Like '" + id + "'");
@@ -160,5 +187,41 @@ public class Repositorio implements IRepositorio {
 		
 		return results.get(0);
 	}
+	
+	@Override
+	public Usuario buscarEmail(String email) throws RepositorioException, UsuarioInexistente {
+		ArrayList<Usuario> results = buscarSQL("SELECT * FROM  usuarios WHERE email Like '" + email + "'");
+		if (results.size() < 1) { 
+			throw new UsuarioInexistente();
+		}
+		
+		return results.get(0);
+	}
+
+	@Override
+	public boolean adicionarMensagem(Mensagem mensagem) throws RepositorioException {
+		try {
+			stm.executeUpdate("INSERT INTO Mensagens (id_Mensagens, id_Remetente, id_Destinatario, assunto, mensagem, isRead) VALUES" + "('"
+					+ mensagem.getIdMenasagem() + "', '" + mensagem.getIdRementente() + "', '" + mensagem.getIdDestinatario() 
+					+ "', '" + mensagem.getAssunto() + "', '" + mensagem.getMensagem() + "', '" + (mensagem.isRead() ? 1 : 0) + "')");
+		}  catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+
+		return true;
+	}
+
+	@Override
+	public ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario)
+			throws RepositorioException, NaoExisteMensagensException {
+		ArrayList<Mensagem> results = buscarSQLMensagem("SELECT * FROM mensagens WHERE id_Destinatario Like '" + idDestinatario + "'");
+		if (results.size() < 1) { 
+			throw new NaoExisteMensagensException();
+		}
+		
+		return results;
+	}
+
 
 }

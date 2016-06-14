@@ -11,7 +11,7 @@
  Target Server Version : 50620
  File Encoding         : utf-8
 
- Date: 06/06/2016 20:02:04 PM
+ Date: 06/08/2016 18:48:23 PM
 */
 
 SET NAMES utf8;
@@ -70,10 +70,13 @@ CREATE TABLE `convites` (
 -- ----------------------------
 DROP TABLE IF EXISTS `mensagens`;
 CREATE TABLE `mensagens` (
-  `id_mensagens` int(11) NOT NULL,
-  `id_remetente` int(11) NOT NULL,
-  `id_destinatario` int(11) NOT NULL,
-  PRIMARY KEY (`id_mensagens`)
+  `id_Mensagens` int(11) NOT NULL,
+  `id_Remetente` int(11) NOT NULL,
+  `id_Destinatario` int(11) NOT NULL,
+  `assunto` varchar(255) NOT NULL,
+  `mensagem` varchar(255) NOT NULL,
+  `isRead` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id_Mensagens`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -161,9 +164,17 @@ CREATE TABLE `usuarios` (
   `CPF` varchar(253) NOT NULL,
   `email` varchar(253) NOT NULL,
   `tipo` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`,`CPF`,`Matricula`),
+  PRIMARY KEY (`id`,`Matricula`,`CPF`,`email`),
+  UNIQUE KEY `Matricula` (`Matricula`) USING HASH,
   UNIQUE KEY `CPF` (`CPF`) USING HASH,
-  UNIQUE KEY `Matricula` (`Matricula`) USING HASH
+  UNIQUE KEY `email` (`email`) USING HASH
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Records of `usuarios`
+-- ----------------------------
+BEGIN;
+INSERT INTO `usuarios` VALUES ('0', 'Luiz', 'senhamassa', '082.323.434-78', '082.323.434-78', 'luiz@gmail.com', 'Aluno');
+COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

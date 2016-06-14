@@ -1,7 +1,6 @@
 package sgta.Repositorio;
 
 import sgta.Repositorio.Repositorio;
-import sgta.Sistema.Aluno;
 
 public class TesteRepositorio {
 	public static void main(String[] args) throws Exception {

@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.MaskFormatter;
 
 import sgta.Repositorio.RepositorioException;
 import sgta.Repositorio.UsuarioInexistente;
@@ -19,7 +20,10 @@ import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
@@ -30,7 +34,7 @@ public class TelaLogin extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField emailTextField;
+	private JTextField cpfTextField;
 	private JPasswordField passwordTextField;
 
 	/**
@@ -38,6 +42,7 @@ public class TelaLogin extends JFrame {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					TelaLogin frame = new TelaLogin();
@@ -69,34 +74,46 @@ public class TelaLogin extends JFrame {
 
 		JButton btnNewButton = new JButton("Novo Cadastro");
 		btnNewButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				TelaCadastro tela2 = new TelaCadastro();
 				tela2.setVisible(true);
 				dispose();
 			}
 		});
-		btnNewButton.setBounds(203, 210, 145, 25);
+		btnNewButton.setBounds(200, 227, 145, 25);
 		contentPane.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton("Acessar");
 		btnNewButton_1.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String cpf = emailTextField.getText();
+				String cpf = cpfTextField.getText();
 				String password = String.valueOf(passwordTextField.getPassword());
-
+				if (cpf.equals("000.000.000-00") && password.equals("1234")) {
+					TelaPrincipal tela = new TelaPrincipal();
+					tela.setVisible(true);
+					dispose();
+					return;
+				}
 				try {
-					Usuario user = Sgta.getInstance().buscarUsuarioPorCPF(cpf);
+					Usuario user;
 
-					if (cpf.equals("admin") && password.equals("1234")) {
-						TelaPrincipal tela = new TelaPrincipal();
-						tela.setVisible(true);
-						dispose();
-					} else if (cpf.isEmpty() || password.isEmpty()) {
+					if (cpf.equals("   .   .   -  ") || password.isEmpty()) {
 						Message.infoBox("Por favor, preencha todos os campos!", "Erro");
-					} else if (user.getSenha().equals(password)) {
+						return;
+					} else {
+						user = Sgta.getInstance().buscarUsuarioPorCPF(cpf);
+						Sgta.usuario = user;
+					}
 
+					if (user.getSenha().equals(password)) {
 						System.out.println("Logado usuario comum!");
+						int quantitadeMensagens = Sgta.getInstance().quantitadeMensagens();
+						if (quantitadeMensagens > 0) {
+							Message.infoBox("Voce tem " + quantitadeMensagens + " novas mensagens", "Novas Mensagens");
+						}
 						TelaPrincipal tela = new TelaPrincipal();
 						tela.setVisible(true);
 						dispose();
@@ -112,22 +129,31 @@ public class TelaLogin extends JFrame {
 
 			}
 		});
-		btnNewButton_1.setBounds(356, 210, 145, 25);
+		btnNewButton_1.setBounds(357, 227, 145, 25);
 		contentPane.add(btnNewButton_1);
 
-		JLabel lblId = new JLabel("Email:");
-		lblId.setBounds(301, 87, 42, 16);
+		JLabel lblId = new JLabel("CPF:");
+		lblId.setBounds(306, 87, 42, 16);
 		contentPane.add(lblId);
 
 		JLabel lblSenha = new JLabel("Senha:");
 		lblSenha.setBounds(301, 136, 47, 16);
 		contentPane.add(lblSenha);
 
-		emailTextField = new JTextField();
-		emailTextField.setBounds(350, 84, 129, 22);
-		contentPane.add(emailTextField);
-		emailTextField.setColumns(10);
-
+		MaskFormatter txtFormatCpf;
+		try {
+			txtFormatCpf = new MaskFormatter("###.###.###-##");
+			cpfTextField = new JFormattedTextField(txtFormatCpf);
+			cpfTextField.setColumns(10);
+			cpfTextField.setBounds(350, 84, 129, 22);
+		} catch (ParseException e1) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um problema na formatacao.");
+		}
+		getContentPane().add(cpfTextField);
+		/*
+		 * cpfTextField = new JTextField(); cpfTextField.setBounds(350, 84, 129,
+		 * 22); contentPane.add(cpfTextField); cpfTextField.setColumns(10);
+		 */
 		passwordTextField = new JPasswordField();
 		passwordTextField.setBounds(350, 133, 129, 22);
 		contentPane.add(passwordTextField);
