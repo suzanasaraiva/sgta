@@ -22,7 +22,7 @@ public class Sgta implements ISgta {
 
 	public Sgta() throws InicializacaoSistemaException {
 		try {
-			this.repositorio = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
+			this.repositorio = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "");
 			System.out.println(this.proximoId());
 		} catch (RepositorioException e) {
 			throw new InicializacaoSistemaException();
