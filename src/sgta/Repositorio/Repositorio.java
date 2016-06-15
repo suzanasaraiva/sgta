@@ -2,6 +2,7 @@ package sgta.Repositorio;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
+import sgta.Sistema.Arquivo;
 import sgta.Sistema.Mensagem;
 import sgta.Sistema.Professor;
 import sgta.Sistema.Administrador;
@@ -12,6 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.mysql.jdbc.PreparedStatement;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
 
 public class Repositorio implements IRepositorio {
@@ -221,6 +228,32 @@ public class Repositorio implements IRepositorio {
 		}
 		
 		return results;
+	}
+
+	@Override
+	public File recuperarArquivo(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException {
+		
+		File file = arquivo.getFile();
+		
+		FileInputStream fis = new FileInputStream(file);
+		
+		String query = "INSERT INTO arquivos (id_arquivo, id_aluno, file)" + "VALUES (?, ?, ?)";
+		
+		PreparedStatement pstm = (PreparedStatement) this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		
+		pstm.setInt(1, arquivo.idArquivos);
+		pstm.setInt(2, arquivo.idAluno);
+		pstm.setBinaryStream(3, fis, (int)file.length());
+		pstm.execute();
+		pstm.close();
+		
+		return true;
 	}
 
 

@@ -1,7 +1,11 @@
 package sgta.Repositorio;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import sgta.Sistema.Arquivo;
 import sgta.Sistema.Mensagem;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
@@ -41,4 +45,8 @@ public interface IRepositorio {
 	public int proximoMensagemId() throws RepositorioException;
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario) throws RepositorioException, NaoExisteMensagensException;
+
+	boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException;
+	
+	public File recuperarArquivo(int id);
 }

@@ -1,16 +1,13 @@
 /*
  Navicat MySQL Data Transfer
-
  Source Server         : Connection
  Source Server Type    : MySQL
  Source Server Version : 50620
  Source Host           : localhost
  Source Database       : sgta
-
  Target Server Type    : MySQL
  Target Server Version : 50620
  File Encoding         : utf-8
-
  Date: 06/08/2016 18:48:23 PM
 */
 
