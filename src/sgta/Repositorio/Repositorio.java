@@ -16,9 +16,11 @@ import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.*;
 
 public class Repositorio implements IRepositorio {
@@ -232,7 +234,10 @@ public class Repositorio implements IRepositorio {
 
 	@Override
 	public File recuperarArquivo(int id) {
-		// TODO Auto-generated method stub
+		Arquivo arq = new Arquivo(arq);
+		FileOutputStream fos = new FileOutputStream(arq);
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		
 		return null;
 	}
 

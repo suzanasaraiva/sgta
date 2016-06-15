@@ -12,7 +12,7 @@ public class TesteRepositorio {
 		try {
 			Repositorio repo = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
 
-			File f = new File("C:\Users\Suzana\Documents\UFRPE\2016.1\Projetinho");
+			File f = new File("C:\\Users\Suzana\\Documents\\UFRPE\\2016.1\\Projetinho\\Va1_2015_2.pdf");
 			
 			Arquivo arq = new Arquivo(0, 0, f);
 			

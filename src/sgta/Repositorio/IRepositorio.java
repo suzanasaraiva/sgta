@@ -48,5 +48,7 @@ public interface IRepositorio {
 
 	boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException;
 	
+	boolean 
+	
 	public File recuperarArquivo(int id);
 }
