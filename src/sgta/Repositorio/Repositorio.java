@@ -4,6 +4,7 @@ import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
 import sgta.Sistema.Arquivo;
 import sgta.Sistema.Mensagem;
+import sgta.Sistema.Oportunidades;
 import sgta.Sistema.Professor;
 import sgta.Sistema.Administrador;
 
@@ -61,6 +62,17 @@ public class Repositorio implements IRepositorio {
 		}
 	}
 
+	@Override
+	public int proximoOportunidadeId() throws RepositorioException {
+		ArrayList<Usuario> re = buscarSQL("SELECT * FROM  oportunidades ORDER BY id DESC");
+		if (re.size() == 0) {
+			return 0;
+		} else {
+			return re.get(0).getIdUsuario() + 1;
+		}
+		
+	}
+	
 	private ArrayList<Usuario> buscarSQL(String query) throws RepositorioException {
 		ArrayList<Usuario> res = new ArrayList<Usuario>();
 		try {
@@ -232,16 +244,8 @@ public class Repositorio implements IRepositorio {
 		return results;
 	}
 
-	@Override
-	public File recuperarArquivo(int id) {
-		Arquivo arq = new Arquivo(arq);
-		FileOutputStream fos = new FileOutputStream(arq);
-		BufferedOutputStream bos = new BufferedOutputStream(fos);
-		
-		return null;
-	}
+	
 
-	@Override
 	public boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException {
 		
 		File file = arquivo.getFile();
@@ -259,6 +263,34 @@ public class Repositorio implements IRepositorio {
 		pstm.close();
 		
 		return true;
+	}
+	public boolean adicionarOportunidade(Oportunidades opor) throws Throwable {
+		stm.executeUpdate("INSERT INTO Oportunidade (idOportunidade, idOrientador, num_vagas, num_vagas_restantes, descricao, tipo_bolsa, valor_bolsa, duracao, requisitos) VALUES" +
+				"(" + opor.getIdOportunidade() + ", " + opor.getIdOrientador() + ", " + opor.getNum_vagas() + ", " + opor.getNum_vagas() + ", '" + opor.getDescricao() + "', '"
+				+  opor.getTipo_bolsa() + "', " + opor.getTipo_bolsa() + ", " + opor.getDuracao() + ", '" + opor.getRequisitos() + "')");
+		return true;
+	}
+	@Override
+	public boolean removerOportunidades(int idOpor) throws Throwable {
+		stm.executeUpdate("DELETE FROM oportunidades WHERE id = " + idOpor);
+		return true;
+	}
+
+	@Override
+	public int recuperarId(String cpf) throws Throwable {
+		int id = -1;
+		stm.execute("SELECT id FROM usuarios where cpf = '" + cpf + "' AND Tipo = 'Professor'");
+		
+		while(rs.next()){
+			id = rs.getInt(0);
+		}
+		return id;
+	}
+
+	@Override
+	public boolean adicionarArquivo(String arq) throws FileNotFoundException, SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 

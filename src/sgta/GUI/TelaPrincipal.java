@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
+import sgta.Sistema.InicializacaoSistemaException;
+
 import javax.swing.JMenu;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -85,6 +88,20 @@ public class TelaPrincipal extends JFrame {
 		menuBar.add(mnTrabalhos);
 		
 		JMenuItem mntmSubmeter = new JMenuItem("Submeter");
+		mntmSubmeter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaSubmeterArquivo telasubmeter = null;
+				try {
+					telasubmeter = new TelaSubmeterArquivo();
+				} catch (InicializacaoSistemaException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				telasubmeter.setVisible(true);
+				dispose();
+			
+			}
+		});
 		mnTrabalhos.add(mntmSubmeter);
 		
 		JMenuItem mntmBuscar = new JMenuItem("Buscar");
@@ -130,6 +147,13 @@ public class TelaPrincipal extends JFrame {
 		menuBar.add(mnSair);
 		
 		JMenuItem mntmLogoff = new JMenuItem("Logoff");
+		mntmLogoff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaLogin t = new TelaLogin();
+				t.setVisible(true);
+				dispose();
+			}
+		});
 		mnSair.add(mntmLogoff);
 	}
 }

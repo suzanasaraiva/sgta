@@ -10,11 +10,11 @@ public class TesteRepositorio {
 
 		System.out.println("Test");
 		try {
-			Repositorio repo = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
+			Repositorio repo = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "");
 
-			File f = new File("C:\\Users\Suzana\\Documents\\UFRPE\\2016.1\\Projetinho\\Va1_2015_2.pdf");
+			File f = new File("C:\\Users\\Suzana\\Desktop\\test.txt");
 			
-			Arquivo arq = new Arquivo(0, 0, f);
+			Arquivo arq = new Arquivo(4,3, f);
 			
 			repo.adicionarArquivo(arq);
 			

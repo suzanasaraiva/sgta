@@ -1,5 +1,7 @@
 package sgta.Sistema;
 
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import sgta.Repositorio.DuplicatedUserException;
@@ -28,4 +30,21 @@ public interface ISgta {
 	int quantitadeMensagens() throws RepositorioException;
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario() throws RepositorioException;
+
+
+
+	void removerOportunidades(int idOpor) throws Throwable;
+
+
+	int proximoOportunidadeId() throws RepositorioException;
+
+	void adicionarOportunidades(int idOportunidade, int idOrientador, String num_vagas, String descricao, String tipo_bolsa,
+			int valor_bolsa, String duracao, String requisitos) throws Throwable;
+	
+	void recuperarId(String cpf) throws Throwable;
+
+
+	void adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
+
+	
 }

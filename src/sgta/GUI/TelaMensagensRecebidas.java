@@ -17,6 +17,8 @@ import sgta.util.Message;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaMensagensRecebidas extends JFrame {
 
@@ -26,7 +28,8 @@ public class TelaMensagensRecebidas extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
-	private JList list;
+	private JList listMsg;
+	private ArrayList<Mensagem> mensagens;
 	/**
 	 * Launch the application.
 	 */
@@ -58,14 +61,30 @@ public class TelaMensagensRecebidas extends JFrame {
 		scrollPane.setBounds(19, 18, 411, 195);
 		contentPane.add(scrollPane);
 		
-		list = new JList();
-		scrollPane.setViewportView(list);
+		listMsg = new JList();
+		scrollPane.setViewportView(listMsg);
 		
 		JButton btnAbrir = new JButton("Abrir");
+		btnAbrir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = listMsg.getSelectedIndex();
+				TelaVisualizarMensagem tela = new TelaVisualizarMensagem();
+				tela.setMsg(mensagens.get(index));
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		btnAbrir.setBounds(19, 225, 117, 29);
 		contentPane.add(btnAbrir);
 		
 		JButton btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaPrincipal tela = new TelaPrincipal();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		btnVoltar.setBounds(313, 225, 117, 29);
 		contentPane.add(btnVoltar);
 		
@@ -73,14 +92,14 @@ public class TelaMensagensRecebidas extends JFrame {
 	}
 	
 	private void carregarList() {
-		ArrayList<Mensagem> mensagens;
+		
 		try {
 			mensagens = Sgta.getInstance().buscarMensagensDestinatario();
 			String[] mensagensText = new String[mensagens.size()];
 			for (int i = 0; i < mensagens.size(); i++) {
 				mensagensText[i] = mensagens.get(i).getAssunto();
 			}
-			list.setListData(mensagensText);
+			listMsg.setListData(mensagensText);
 		} catch (Exception e) {
 			Message.infoBox("Erro ao se conectar com o servidor!", "Erro");
 		}

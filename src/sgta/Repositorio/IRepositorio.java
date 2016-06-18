@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import sgta.Sistema.Arquivo;
 import sgta.Sistema.Mensagem;
+import sgta.Sistema.Oportunidades;
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 
@@ -46,9 +47,19 @@ public interface IRepositorio {
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario) throws RepositorioException, NaoExisteMensagensException;
 
+
+	boolean adicionarOportunidade(Oportunidades opor) throws Throwable;
+
+	boolean removerOportunidades(int idOpor) throws Throwable;
+
+	int proximoOportunidadeId() throws RepositorioException;
+	
+	int recuperarId(String id) throws Throwable;
+
+	boolean adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
+
 	boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException;
-	
-	boolean 
-	
-	public File recuperarArquivo(int id);
+
+
+
 }

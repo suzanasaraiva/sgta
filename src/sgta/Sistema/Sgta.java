@@ -1,5 +1,7 @@
 package sgta.Sistema;
 
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import sgta.Repositorio.DuplicatedUserException;
@@ -13,11 +15,11 @@ import sgta.util.Message;
 import sgta.Sistema.ISgta;
 
 public class Sgta implements ISgta {
-	
+
 	private IRepositorio repositorio;
 
 	private static ISgta instance;
-	
+
 	public static Usuario usuario;
 
 	public Sgta() throws InicializacaoSistemaException {
@@ -50,13 +52,18 @@ public class Sgta implements ISgta {
 	}
 
 	@Override
-	public int proximoId() throws RepositorioException {	
+	public int proximoId() throws RepositorioException {
 		return repositorio.proximoId();
 	}
-	
+
 	@Override
-	public int proximoMensagemId() throws RepositorioException {	
+	public int proximoMensagemId() throws RepositorioException {
 		return repositorio.proximoId();
+	}
+
+	@Override
+	public int proximoOportunidadeId() throws RepositorioException {
+		return repositorio.proximoOportunidadeId();
 	}
 
 	@Override
@@ -84,7 +91,7 @@ public class Sgta implements ISgta {
 	public Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarCPF(cpf);
 	}
-	
+
 	@Override
 	public Usuario buscarUsuarioPorEmail(String email) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarEmail(email);
@@ -122,6 +129,31 @@ public class Sgta implements ISgta {
 			Message.infoBox("Nao existe mensagens para voce", "Erro");
 		}
 		return resultado;
+	}
+
+	@Override
+	public void adicionarOportunidades(int idOportunidade, int idOrientador, String num_vagas, String descricao,
+			String tipo_bolsa, int valor_bolsa, String duracao, String requisitos) throws Throwable {
+		Oportunidades opor = new Oportunidades(idOportunidade, idOrientador, num_vagas, descricao, tipo_bolsa,
+				valor_bolsa, duracao, requisitos);
+		repositorio.adicionarOportunidade(opor);
+	}
+
+	@Override
+	public void removerOportunidades(int idOpor) throws Throwable {
+		repositorio.removerOportunidades(idOpor);
+
+	}
+
+	@Override
+	public void adicionarArquivo(String arq) throws FileNotFoundException, SQLException {
+		repositorio.adicionarArquivo(arq);
+
+	}
+
+	@Override
+	public void recuperarId(String cpf) throws Throwable {
+		repositorio.recuperarId(cpf);		
 	}
 
 }

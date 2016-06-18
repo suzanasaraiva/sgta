@@ -67,7 +67,7 @@ public class TelaEnviarMensagens extends JFrame {
 				String email = destTextField.getText();
 				String assunto = assuntoTextField.getText();
 				String mensagem = mensagemTextField.getText();
-				email = "luiz@gmail.com";
+				
 				if (email.isEmpty() || assunto.isEmpty() || mensagem.isEmpty()) {
 					Message.infoBox("Por favor, preencha todos os campos!", "Erro");
 					return;
