@@ -7,17 +7,28 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import sgta.Repositorio.RepositorioException;
+import sgta.Repositorio.UsuarioInexistente;
+import sgta.Sistema.InicializacaoSistemaException;
 import sgta.Sistema.Mensagem;
+import sgta.Sistema.Sgta;
+import sgta.Sistema.Usuario;
+import sgta.util.Message;
+
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaVisualizarMensagem extends JFrame {
 
 	private JPanel contentPane;
 	private Mensagem msg;
-	private JLabel lblDestinatario;
+	private JLabel lblRemetente;
 	private JLabel lblSubject;
 	private JTextArea textArea;
+	private JButton btnVoltar;
 	/**
 	 * Launch the application.
 	 */
@@ -36,9 +47,22 @@ public class TelaVisualizarMensagem extends JFrame {
 	
 	public void setMsg(Mensagem msg) {
 		this.msg = msg;
-		this.lblDestinatario.setText(msg.getIdRementente() +"");
-		this.lblSubject.setText(msg.getAssunto());
-		this.textArea.setText(msg.getMensagem());
+		try {
+			Usuario remetente = Sgta.getInstance().buscarUsuarioPorID(msg.getIdRementente());
+			this.lblRemetente.setText(remetente.getEmail());
+			this.lblSubject.setText(msg.getAssunto());
+			this.textArea.setText(msg.getMensagem());
+		} catch (RepositorioException e) {
+			Message.infoBox("Error", "O sistema nao pode se conectar com o servidor!");
+			e.printStackTrace();
+		} catch (UsuarioInexistente e) {
+			Message.infoBox("Error", "O usuario nao existe!");
+			e.printStackTrace();
+		} catch (InicializacaoSistemaException e) {
+			Message.infoBox("Error", "Um erro ocorreu no sistema!");
+			e.printStackTrace();
+		}
+		
 	}
 
 	/**
@@ -52,18 +76,40 @@ public class TelaVisualizarMensagem extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		 lblDestinatario = new JLabel("New label");
-		lblDestinatario.setBounds(22, 13, 373, 36);
-		contentPane.add(lblDestinatario);
+		lblRemetente = new JLabel("New label");
+		lblRemetente.setBounds(22, 13, 373, 36);
+		contentPane.add(lblRemetente);
 		
-		 lblSubject = new JLabel("New label");
+		lblSubject = new JLabel("New label");
 		lblSubject.setBounds(22, 55, 373, 26);
 		contentPane.add(lblSubject);
 		
 		 textArea = new JTextArea();
 		textArea.setEditable(false);
-		textArea.setBounds(22, 94, 381, 146);
+		textArea.setBounds(22, 94, 400, 115);
 		contentPane.add(textArea);
+		
+		JButton btnResponder = new JButton("Responder");
+		btnResponder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaEnviarMensagens tela = new TelaEnviarMensagens();
+				tela.setFields(lblRemetente.getText(), "RE: " + lblSubject.getText());
+				tela.setVisible(true);
+				dispose();
+			}
+		});
+		btnResponder.setBounds(22, 231, 117, 29);
+		contentPane.add(btnResponder);
+		
+		btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaMensagensRecebidas tela = new TelaMensagensRecebidas();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
+		btnVoltar.setBounds(305, 231, 117, 29);
+		contentPane.add(btnVoltar);
 	}
-
 }

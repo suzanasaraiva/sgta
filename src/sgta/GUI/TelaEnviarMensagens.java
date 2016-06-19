@@ -46,6 +46,11 @@ public class TelaEnviarMensagens extends JFrame {
 			}
 		});
 	}
+	
+	public void setFields(String dest, String assunto) {
+		this.destTextField.setText(dest);
+		this.assuntoTextField.setText(assunto);
+	}
 
 	/**
 	 * Create the frame.

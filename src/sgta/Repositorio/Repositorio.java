@@ -158,9 +158,13 @@ public class Repositorio implements IRepositorio {
 	}
 
 	@Override
-	public ArrayList<Usuario> buscarId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Usuario buscarId(int id) throws RepositorioException, UsuarioInexistente {
+		ArrayList<Usuario> results = buscarSQL("SELECT * FROM  usuarios WHERE id Like '" + id + "'");
+		if (results.size() < 1) { 
+			throw new UsuarioInexistente();
+		}
+		
+		return results.get(0);
 	}
 
 	@Override

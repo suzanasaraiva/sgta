@@ -17,6 +17,8 @@ public interface ISgta {
 
 	void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException;
 	
+	Usuario buscarUsuarioPorID(int id) throws RepositorioException, UsuarioInexistente;
+	
 	Usuario buscarUsuarioPorCPF(String cpf) throws RepositorioException, UsuarioInexistente;
 	
 	Usuario buscarUsuarioPorEmail(String email) throws RepositorioException, UsuarioInexistente;

@@ -21,7 +21,7 @@ public interface IRepositorio {
 
 	ArrayList<Usuario> buscarNome(String nome);
 
-	ArrayList<Usuario> buscarId(int id);
+	Usuario buscarId(int id) throws RepositorioException, UsuarioInexistente;
 
 	Usuario buscarCPF(String cpf) throws RepositorioException, UsuarioInexistente;
 	
