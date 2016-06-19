@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 
-public class TelaMensagensRecebidas extends JFrame {
+public class TelaMensagensEnviadas extends JFrame {
 
 	/**
 	 * 
@@ -39,7 +39,7 @@ public class TelaMensagensRecebidas extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaMensagensRecebidas frame = new TelaMensagensRecebidas();
+					TelaMensagensEnviadas frame = new TelaMensagensEnviadas();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -51,8 +51,8 @@ public class TelaMensagensRecebidas extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaMensagensRecebidas() {
-		setTitle("Mensagens Recebidas");
+	public TelaMensagensEnviadas() {
+		setTitle("Mensagens Enviadas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -67,7 +67,7 @@ public class TelaMensagensRecebidas extends JFrame {
 				int index = table.getSelectedRow();
 				if (index != -1) {
 					TelaVisualizarMensagem tela = new TelaVisualizarMensagem();
-					tela.setMsg(mensagens.get(index), true);
+					tela.setMsg(mensagens.get(index), false);
 					tela.setVisible(true);
 					dispose();
 				} else {
@@ -108,7 +108,7 @@ public class TelaMensagensRecebidas extends JFrame {
 		};
 		
 		table.setModel(model);
-		model.addColumn("Remetente");
+		model.addColumn("Destinatario");
 		model.addColumn("Assunto");
 	
 		scrollPane.setViewportView(table);
@@ -119,25 +119,18 @@ public class TelaMensagensRecebidas extends JFrame {
 	private void carregarList() {
 		
 		try {
-			mensagens = Sgta.getInstance().buscarMensagensDestinatario();
+			mensagens = Sgta.getInstance().buscarMensagensRemetetne();
 			ISgta sgta = Sgta.getInstance();
 			for (int i = 0; i < mensagens.size(); i++) {
 				
-				Usuario user = sgta.buscarUsuarioPorID(mensagens.get(i).getIdRementente());
+				Usuario user = sgta.buscarUsuarioPorID(mensagens.get(i).getIdDestinatario());
 				String email = user.getEmail();
 				String assunto = mensagens.get(i).getAssunto();
-				if (mensagens.get(i).isRead()) { 
-					model.addRow(new Object[] { email , assunto });
-				} else {
-					model.addRow(new Object[] { this.bold(email), this.bold(assunto) });
-				}
+				 
+				model.addRow(new Object[] { email , assunto });
 			}
 		} catch (Exception e) {
 			Message.infoBox("Erro ao se conectar com o servidor!", "Erro");
 		}
-	}
-	
-	private String bold(String msg) {
-		return  "<html><b>" + msg + "</b></html>";
 	}
 }

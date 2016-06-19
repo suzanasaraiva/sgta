@@ -330,5 +330,16 @@ public class Repositorio implements IRepositorio {
 			throw new RepositorioException();
 		}
 		return true;
+	}
+
+	@Override
+	public ArrayList<Mensagem> buscarMensagensRemetente(int idRemetente)
+			throws RepositorioException, NaoExisteMensagensException {
+		ArrayList<Mensagem> results = buscarSQLMensagem("SELECT * FROM mensagens WHERE id_Remetente Like '" + idRemetente + "'");
+		if (results.size() < 1) { 
+			throw new NaoExisteMensagensException();
+		}
+		
+		return results;
 	}	
 }

@@ -48,6 +48,8 @@ public interface IRepositorio {
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario) throws RepositorioException, NaoExisteMensagensException;
 
+	ArrayList<Mensagem> buscarMensagensRemetente(int idRemetente) throws RepositorioException, NaoExisteMensagensException;
+	
 	boolean adicionarOportunidade(Oportunidades opor) throws Throwable;
 
 	boolean removerOportunidades(int idOpor) throws Throwable;
@@ -60,5 +62,5 @@ public interface IRepositorio {
 
 	Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException;
 
-	boolean marcarLido(int id) throws RepositorioException;
+	boolean marcarLido(int id) throws RepositorioException;	
 }

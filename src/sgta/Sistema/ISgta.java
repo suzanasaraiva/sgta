@@ -32,6 +32,8 @@ public interface ISgta {
 	int quantitadeMensagens() throws RepositorioException;
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario() throws RepositorioException;
+	
+	ArrayList<Mensagem> buscarMensagensRemetetne() throws RepositorioException;
 
 	void removerOportunidades(int idOpor) throws Throwable;
 

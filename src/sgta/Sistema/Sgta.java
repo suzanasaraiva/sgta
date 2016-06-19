@@ -160,4 +160,16 @@ public class Sgta implements ISgta {
 		repositorio.marcarLido(id);
 	}
 
+	@Override
+	public ArrayList<Mensagem> buscarMensagensRemetetne() throws RepositorioException {
+		ArrayList<Mensagem> resultado;
+		try {
+			resultado = repositorio.buscarMensagensRemetente(Sgta.usuario.getIdUsuario());
+		} catch (NaoExisteMensagensException e) {
+			resultado = new ArrayList<Mensagem>();
+			Message.infoBox("Voce nao envior nenhuma mensagem", "Erro");
+		}
+		return resultado;
+	}
+
 }

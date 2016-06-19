@@ -82,6 +82,13 @@ public class TelaPrincipal extends JFrame {
 		mnMensagens.add(mntmRecebidas);
 		
 		JMenuItem mntmEnviadas = new JMenuItem("Enviadas");
+		mntmEnviadas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaMensagensEnviadas telamensagens = new TelaMensagensEnviadas();
+				telamensagens.setVisible(true);
+				dispose();
+			}
+		});
 		mnMensagens.add(mntmEnviadas);
 		
 		JMenu mnTrabalhos = new JMenu("Trabalhos");

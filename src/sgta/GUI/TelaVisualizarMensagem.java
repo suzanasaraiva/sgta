@@ -26,12 +26,15 @@ public class TelaVisualizarMensagem extends JFrame {
 
 	private JPanel contentPane;
 	private Mensagem msg;
-	private JLabel lblRemetente;
+	private JLabel lblEmailTxt;
 	private JLabel lblSubject;
-	private JTextArea txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn;
+	private JTextArea txtMessage;
 	private JButton btnVoltar;
-	private JLabel lblRemetente_1;
+	private JLabel lblEmail;
 	private JLabel lblAssunto;
+	private boolean recebida;
+	private String remetente;
+	private String destinatario;
 	/**
 	 * Launch the application.
 	 */
@@ -48,14 +51,22 @@ public class TelaVisualizarMensagem extends JFrame {
 		});
 	}
 	
-	public void setMsg(Mensagem msg) {
+	public void setMsg(Mensagem msg, boolean recebida) {
+		this.recebida = recebida;
 		this.msg = msg;
 		try {
-			Usuario remetente = Sgta.getInstance().buscarUsuarioPorID(msg.getIdRementente());
-			this.lblRemetente.setText(remetente.getEmail());
+			this.remetente = Sgta.getInstance().buscarUsuarioPorID(msg.getIdRementente()).getEmail();
+			this.destinatario = Sgta.getInstance().buscarUsuarioPorID(msg.getIdDestinatario()).getEmail();
+			if (recebida) {
+				
+				this.lblEmailTxt.setText(this.remetente);
+			} else {
+				this.lblEmailTxt.setText(this.destinatario);
+				this.lblEmail.setText("Destinatario:");
+			}
 			this.lblSubject.setText(msg.getAssunto());
-			this.txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setText(msg.getMensagem());
-			Sgta.getInstance().marcarLido(msg.getIdMenasagem());
+			this.txtMessage.setText(msg.getMensagem());
+			
 		} catch (RepositorioException e) {
 			Message.infoBox("Error", "O sistema nao pode se conectar com o servidor!");
 			e.printStackTrace();
@@ -80,26 +91,30 @@ public class TelaVisualizarMensagem extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		lblRemetente = new JLabel("New label");
-		lblRemetente.setBounds(114, 6, 308, 36);
-		contentPane.add(lblRemetente);
+		lblEmailTxt = new JLabel("New label");
+		lblEmailTxt.setBounds(132, 6, 290, 36);
+		contentPane.add(lblEmailTxt);
 		
 		lblSubject = new JLabel("New label");
-		lblSubject.setBounds(114, 55, 281, 26);
+		lblSubject.setBounds(132, 55, 263, 26);
 		contentPane.add(lblSubject);
 		
-		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn = new JTextArea();
-		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setWrapStyleWord(true);
-		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setLineWrap(true);
-		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setEditable(false);
-		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setBounds(22, 94, 400, 115);
-		contentPane.add(txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn);
+		txtMessage = new JTextArea();
+		txtMessage.setWrapStyleWord(true);
+		txtMessage.setLineWrap(true);
+		txtMessage.setEditable(false);
+		txtMessage.setBounds(22, 94, 400, 115);
+		contentPane.add(txtMessage);
 		
 		JButton btnResponder = new JButton("Responder");
 		btnResponder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				TelaEnviarMensagens tela = new TelaEnviarMensagens();
-				tela.setFields(lblRemetente.getText(), "RE: " + lblSubject.getText());
+				if (recebida) {
+					tela.setFields(remetente, "RE: " + lblSubject.getText());
+				} else {
+					tela.setFields(destinatario, "RE: " + lblSubject.getText());
+				}
 				tela.setVisible(true);
 				dispose();
 			}
@@ -110,7 +125,13 @@ public class TelaVisualizarMensagem extends JFrame {
 		btnVoltar = new JButton("Voltar");
 		btnVoltar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				TelaMensagensRecebidas tela = new TelaMensagensRecebidas();
+				JFrame tela;
+				if (recebida) {
+					tela = new TelaMensagensRecebidas();
+				} else {
+					tela = new TelaMensagensEnviadas();	
+				}
+				
 				tela.setVisible(true);
 				dispose();
 			}
@@ -118,12 +139,12 @@ public class TelaVisualizarMensagem extends JFrame {
 		btnVoltar.setBounds(305, 231, 117, 29);
 		contentPane.add(btnVoltar);
 		
-		lblRemetente_1 = new JLabel("Remetente:");
-		lblRemetente_1.setBounds(22, 16, 80, 16);
-		contentPane.add(lblRemetente_1);
+		lblEmail = new JLabel("Remetente:");
+		lblEmail.setBounds(22, 16, 98, 16);
+		contentPane.add(lblEmail);
 		
 		lblAssunto = new JLabel("Assunto:");
-		lblAssunto.setBounds(22, 60, 80, 16);
+		lblAssunto.setBounds(22, 60, 98, 16);
 		contentPane.add(lblAssunto);
 	}
 }

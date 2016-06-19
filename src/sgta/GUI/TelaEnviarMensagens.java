@@ -81,7 +81,7 @@ public class TelaEnviarMensagens extends JFrame {
 				try {
 					ISgta sgta = Sgta.getInstance();
 					int idDestinatario = sgta.buscarUsuarioPorEmail(email).getIdUsuario();
-					System.out.println("ID next: " + sgta.proximoMensagemId());
+					
 					sgta.adicionarMensagem(new Mensagem(sgta.proximoMensagemId(), Sgta.usuario.getIdUsuario(), idDestinatario, assunto, mensagem, false));
 					Message.infoBox("Mensagem enviada com sucesso!", "Mensagem Sucesso");
 					TelaPrincipal tela = new TelaPrincipal();
