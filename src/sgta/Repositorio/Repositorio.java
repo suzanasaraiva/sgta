@@ -58,11 +58,11 @@ public class Repositorio implements IRepositorio {
 	
 	@Override
 	public int proximoMensagemId() throws RepositorioException {
-		ArrayList<Usuario> re = buscarSQL("SELECT * FROM  mensagens ORDER BY id DESC");
+		ArrayList<Mensagem> re = buscarSQLMensagem("SELECT * FROM  mensagens ORDER BY id_Mensagens DESC");
 		if (re.size() == 0) {
 			return 0;
 		} else {
-			return re.get(0).getIdUsuario() + 1;
+			return re.get(0).getIdMenasagem() + 1;
 		}
 	}
 
@@ -319,5 +319,16 @@ public class Repositorio implements IRepositorio {
 			e.printStackTrace();
 			throw new RepositorioException();
 		}
+	}
+
+	@Override
+	public boolean marcarLido(int id) throws RepositorioException {
+		try {
+			stm.executeUpdate("UPDATE Mensagens SET isRead=" + 1 + " WHERE id_Mensagens Like '" + id + "'");
+		}  catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+		return true;
 	}	
 }

@@ -130,7 +130,6 @@ public class TelaPrincipal extends JFrame {
 		
 		JMenuItem mntmFormarBanca = new JMenuItem("Formar Banca");
 		mntmFormarBanca.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				TelaFormarBanca telabanca = new TelaFormarBanca();
 				telabanca.setVisible(true);

@@ -60,4 +60,5 @@ public interface IRepositorio {
 
 	Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException;
 
+	boolean marcarLido(int id) throws RepositorioException;
 }

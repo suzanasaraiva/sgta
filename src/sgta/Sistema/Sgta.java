@@ -58,7 +58,7 @@ public class Sgta implements ISgta {
 
 	@Override
 	public int proximoMensagemId() throws RepositorioException {
-		return repositorio.proximoId();
+		return repositorio.proximoMensagemId();
 	}
 
 	@Override
@@ -153,6 +153,11 @@ public class Sgta implements ISgta {
 	@Override
 	public Usuario buscarUsuarioPorID(int id) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarId(id);
+	}
+
+	@Override
+	public void marcarLido(int id) throws RepositorioException {
+		repositorio.marcarLido(id);
 	}
 
 }

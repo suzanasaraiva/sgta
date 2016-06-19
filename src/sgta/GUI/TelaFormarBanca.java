@@ -8,6 +8,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaFormarBanca extends JFrame {
 
@@ -73,6 +75,13 @@ public class TelaFormarBanca extends JFrame {
 		contentPane.add(button);
 		
 		JButton button_1 = new JButton("Cancelar");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaPrincipal tela = new TelaPrincipal();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		button_1.setBounds(406, 384, 121, 25);
 		contentPane.add(button_1);
 	}

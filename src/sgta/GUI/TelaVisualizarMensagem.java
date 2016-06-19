@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
 
 public class TelaVisualizarMensagem extends JFrame {
 
@@ -27,8 +28,10 @@ public class TelaVisualizarMensagem extends JFrame {
 	private Mensagem msg;
 	private JLabel lblRemetente;
 	private JLabel lblSubject;
-	private JTextArea textArea;
+	private JTextArea txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn;
 	private JButton btnVoltar;
+	private JLabel lblRemetente_1;
+	private JLabel lblAssunto;
 	/**
 	 * Launch the application.
 	 */
@@ -51,7 +54,8 @@ public class TelaVisualizarMensagem extends JFrame {
 			Usuario remetente = Sgta.getInstance().buscarUsuarioPorID(msg.getIdRementente());
 			this.lblRemetente.setText(remetente.getEmail());
 			this.lblSubject.setText(msg.getAssunto());
-			this.textArea.setText(msg.getMensagem());
+			this.txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setText(msg.getMensagem());
+			Sgta.getInstance().marcarLido(msg.getIdMenasagem());
 		} catch (RepositorioException e) {
 			Message.infoBox("Error", "O sistema nao pode se conectar com o servidor!");
 			e.printStackTrace();
@@ -77,17 +81,19 @@ public class TelaVisualizarMensagem extends JFrame {
 		contentPane.setLayout(null);
 		
 		lblRemetente = new JLabel("New label");
-		lblRemetente.setBounds(22, 13, 373, 36);
+		lblRemetente.setBounds(114, 6, 308, 36);
 		contentPane.add(lblRemetente);
 		
 		lblSubject = new JLabel("New label");
-		lblSubject.setBounds(22, 55, 373, 26);
+		lblSubject.setBounds(114, 55, 281, 26);
 		contentPane.add(lblSubject);
 		
-		 textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setBounds(22, 94, 400, 115);
-		contentPane.add(textArea);
+		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn = new JTextArea();
+		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setWrapStyleWord(true);
+		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setLineWrap(true);
+		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setEditable(false);
+		txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn.setBounds(22, 94, 400, 115);
+		contentPane.add(txtrZxncmzxncmznxcmnzxcmnzmcnmnmznZmncmNzxmcn);
 		
 		JButton btnResponder = new JButton("Responder");
 		btnResponder.addActionListener(new ActionListener() {
@@ -111,5 +117,13 @@ public class TelaVisualizarMensagem extends JFrame {
 		});
 		btnVoltar.setBounds(305, 231, 117, 29);
 		contentPane.add(btnVoltar);
+		
+		lblRemetente_1 = new JLabel("Remetente:");
+		lblRemetente_1.setBounds(22, 16, 80, 16);
+		contentPane.add(lblRemetente_1);
+		
+		lblAssunto = new JLabel("Assunto:");
+		lblAssunto.setBounds(22, 60, 80, 16);
+		contentPane.add(lblAssunto);
 	}
 }

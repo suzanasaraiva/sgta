@@ -41,6 +41,8 @@ public interface ISgta {
 			int valor_bolsa, String duracao, String requisitos) throws Throwable;
 	
 	void recuperarId(String cpf) throws Throwable;
+	
+	void marcarLido(int id) throws RepositorioException;
 
 //	void adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
 

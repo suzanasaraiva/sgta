@@ -2,16 +2,20 @@ package sgta.GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import sgta.Repositorio.RepositorioException;
+import sgta.Sistema.ISgta;
 import sgta.Sistema.InicializacaoSistemaException;
 import sgta.Sistema.Mensagem;
 import sgta.Sistema.Sgta;
+import sgta.Sistema.Usuario;
 import sgta.util.Message;
 
 import javax.swing.JScrollPane;
@@ -19,6 +23,7 @@ import javax.swing.JList;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JTable;
 
 public class TelaMensagensRecebidas extends JFrame {
 
@@ -28,8 +33,10 @@ public class TelaMensagensRecebidas extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel contentPane;
-	private JList listMsg;
 	private ArrayList<Mensagem> mensagens;
+	private JTable table;
+	private JScrollPane scrollPane;
+	private DefaultTableModel model;
 	/**
 	 * Launch the application.
 	 */
@@ -57,17 +64,11 @@ public class TelaMensagensRecebidas extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(19, 18, 411, 195);
-		contentPane.add(scrollPane);
-		
-		listMsg = new JList();
-		scrollPane.setViewportView(listMsg);
-		
 		JButton btnAbrir = new JButton("Abrir");
 		btnAbrir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int index = listMsg.getSelectedIndex();
+				
+				int index = table.getSelectedRow();
 				TelaVisualizarMensagem tela = new TelaVisualizarMensagem();
 				tela.setMsg(mensagens.get(index));
 				tela.setVisible(true);
@@ -88,6 +89,30 @@ public class TelaMensagensRecebidas extends JFrame {
 		btnVoltar.setBounds(313, 225, 117, 29);
 		contentPane.add(btnVoltar);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(19, 18, 407, 195);
+		contentPane.add(scrollPane);
+		
+		table = new JTable();
+		model = new DefaultTableModel() {
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        //all cells false
+		        return false;
+		    }
+		};
+		
+		table.setModel(model);
+		model.addColumn("Remetente");
+		model.addColumn("Assunto");
+	
+		scrollPane.setViewportView(table);
+		
 		carregarList();
 	}
 	
@@ -95,13 +120,24 @@ public class TelaMensagensRecebidas extends JFrame {
 		
 		try {
 			mensagens = Sgta.getInstance().buscarMensagensDestinatario();
-			String[] mensagensText = new String[mensagens.size()];
+			ISgta sgta = Sgta.getInstance();
 			for (int i = 0; i < mensagens.size(); i++) {
-				mensagensText[i] = mensagens.get(i).getAssunto();
+				
+				Usuario user = sgta.buscarUsuarioPorID(mensagens.get(i).getIdRementente());
+				String email = user.getEmail(); //<html><b>
+				String assunto = mensagens.get(i).getAssunto();
+				if (mensagens.get(i).isRead()) { 
+					model.addRow(new Object[] { email , assunto });
+				} else {
+					model.addRow(new Object[] { this.bold(email), this.bold(assunto) });
+				}
 			}
-			listMsg.setListData(mensagensText);
 		} catch (Exception e) {
 			Message.infoBox("Erro ao se conectar com o servidor!", "Erro");
 		}
+	}
+	
+	private String bold(String msg) {
+		return  "<html><b>" + msg + "</b></html>";
 	}
 }
