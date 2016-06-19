@@ -146,12 +146,6 @@ public class Sgta implements ISgta {
 	}
 
 	@Override
-	public void adicionarArquivo(String arq) throws FileNotFoundException, SQLException {
-		repositorio.adicionarArquivo(arq);
-
-	}
-
-	@Override
 	public void recuperarId(String cpf) throws Throwable {
 		repositorio.recuperarId(cpf);		
 	}

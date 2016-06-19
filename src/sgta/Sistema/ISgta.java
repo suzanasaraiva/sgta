@@ -33,10 +33,7 @@ public interface ISgta {
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario() throws RepositorioException;
 
-
-
 	void removerOportunidades(int idOpor) throws Throwable;
-
 
 	int proximoOportunidadeId() throws RepositorioException;
 
@@ -45,8 +42,7 @@ public interface ISgta {
 	
 	void recuperarId(String cpf) throws Throwable;
 
-
-	void adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
+//	void adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
 
 	
 }

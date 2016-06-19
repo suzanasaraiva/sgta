@@ -1,4 +1,5 @@
 package sgta.Repositorio;
+
 import sgta.Sistema.Trabalhos;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
@@ -15,13 +16,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.pdfbox.io.IOUtils;
+
 import com.mysql.jdbc.PreparedStatement;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 
 public class Repositorio implements IRepositorio {
@@ -250,24 +254,6 @@ public class Repositorio implements IRepositorio {
 
 	
 
-	public boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException {
-		
-		File file = arquivo.getFile();
-		
-		FileInputStream fis = new FileInputStream(file);
-		
-		String query = "INSERT INTO arquivos (id_arquivo, id_aluno, file)" + "VALUES (?, ?, ?)";
-		
-		PreparedStatement pstm = (PreparedStatement) this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-		
-		pstm.setInt(1, arquivo.idArquivos);
-		pstm.setInt(2, arquivo.idAluno);
-		pstm.setBinaryStream(3, fis, (int)file.length());
-		pstm.execute();
-		pstm.close();
-		
-		return true;
-	}
 	public boolean adicionarOportunidade(Oportunidades opor) throws Throwable {
 		stm.executeUpdate("INSERT INTO Oportunidade (idOportunidade, idOrientador, num_vagas, num_vagas_restantes, descricao, tipo_bolsa, valor_bolsa, duracao, requisitos) VALUES" +
 				"(" + opor.getIdOportunidade() + ", " + opor.getIdOrientador() + ", " + opor.getNum_vagas() + ", " + opor.getNum_vagas() + ", '" + opor.getDescricao() + "', '"
@@ -290,12 +276,48 @@ public class Repositorio implements IRepositorio {
 		}
 		return id;
 	}
-
-	@Override
-	public boolean adicionarArquivo(String arq) throws FileNotFoundException, SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException {
+		
+		File file = arquivo.getFile();
+		
+		FileInputStream fis = new FileInputStream(file);
+		
+		String query = "INSERT INTO arquivos (id_arquivo, id_aluno, file)" + "VALUES (?, ?, ?)";
+		
+		PreparedStatement pstm = (PreparedStatement) this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+		
+		pstm.setInt(1, arquivo.idArquivos);
+		pstm.setInt(2, arquivo.idAluno);
+		pstm.setBinaryStream(3, fis, (int)file.length());
+		pstm.execute();
+		pstm.close();
+		
+		return true;
 	}
 
-
+	@Override
+	public Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException {
+		Arquivo res = null;
+		try {
+			
+			rs = stm.executeQuery("SELECT * FROM arquivos WHERE id_arquivo Like '" + id + "'");
+			while(rs.next()) {
+				int id_aluno = rs.getInt("id_aluno");
+				
+				InputStream binaryStream = rs.getBinaryStream("file");
+				
+				File tempFile = File.createTempFile("pdfFile", "pdf");
+			    tempFile.deleteOnExit();
+				FileOutputStream out = new FileOutputStream(tempFile);
+				IOUtils.copy(binaryStream, out);
+				   
+				res = new Arquivo(id, id_aluno, tempFile);
+			}
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+	}	
 }

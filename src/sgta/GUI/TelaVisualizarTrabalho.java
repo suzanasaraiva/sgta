@@ -20,6 +20,10 @@ import org.apache.pdfbox.printing.PDFPageable;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.pdfbox.tools.PDFBox;
 
+import sgta.Repositorio.IRepositorio;
+import sgta.Repositorio.Repositorio;
+import sgta.Repositorio.RepositorioException;
+import sgta.Sistema.Arquivo;
 import sgta.Sistema.Sgta;
 
 import javax.swing.JTextArea;
@@ -48,8 +52,14 @@ public class TelaVisualizarTrabalho extends JFrame {
 	/**
 	 * Create the frame.
 	 * @throws IOException 
+	 * @throws RepositorioException 
 	 */
-	public TelaVisualizarTrabalho() throws IOException {
+	public TelaVisualizarTrabalho() throws IOException, RepositorioException {
+		
+		IRepositorio repo = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
+		
+		Arquivo a = repo.buscarArquivoPorID(0);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
 		
@@ -57,32 +67,13 @@ public class TelaVisualizarTrabalho extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
 		
-		File PDF_Path = new File("/Users/luizdaniel/Downloads/stanley.ec02.pdf");
+//		File PDF_Path = new File("/Users/luizdaniel/Downloads/stanley.ec02.pdf");
 		
-		PDDocument inputPDF = PDDocument.load(PDF_Path);
-
-		PDPageTree pdf = inputPDF.getPages();
+//		PDDocument inputPDF = PDDocument.load(PDF_Path);
 		
-		PDPage page = pdf.get(0);
-		
-		PDFPageable a = new PDFPageable(inputPDF);
-		
-		PDFBox box ;
+		PDDocument inputPDF = PDDocument.load(a.getFile());
 		
 		PDFRenderer render = new PDFRenderer(inputPDF);
-		
-//		PDFParser parser = new PDFStreamParser(inputPDF);
-//		PDPage testPage = (PDPage)allPages.get(0);
-//		
-//		
-//		JFrame testFrame = new JFrame();
-//		testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		PDFPagePanel pdfPanel = new PDFPagePanel();
-//		contentPane.setPage(testPage);
-//		contentPane.add(pdfPanel);
-//		contentPane.setBounds(40, 40, pdfPanel.getWidth(), pdfPanel.getHeight());
-//		contentPane.setVisible(true);
-//		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -90,6 +81,5 @@ public class TelaVisualizarTrabalho extends JFrame {
 		lblNewLabel.setBounds(6, 85, 758, 449);
 		lblNewLabel.setIcon(new ImageIcon(render.renderImage(0)));
 		contentPane.add(lblNewLabel);
-		
 	}
 }

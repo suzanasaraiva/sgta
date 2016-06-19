@@ -2,6 +2,7 @@ package sgta.Repositorio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -47,7 +48,6 @@ public interface IRepositorio {
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario) throws RepositorioException, NaoExisteMensagensException;
 
-
 	boolean adicionarOportunidade(Oportunidades opor) throws Throwable;
 
 	boolean removerOportunidades(int idOpor) throws Throwable;
@@ -56,10 +56,8 @@ public interface IRepositorio {
 	
 	int recuperarId(String id) throws Throwable;
 
-	boolean adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
-
 	boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException;
 
-
+	Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException;
 
 }
