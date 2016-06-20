@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
-public class TelaVisualizarTrabalho extends JFrame {
+public class TelaVisualizarArquivo extends JFrame {
 
 	/**
 	 * 
@@ -47,7 +47,7 @@ public class TelaVisualizarTrabalho extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaVisualizarTrabalho frame = new TelaVisualizarTrabalho();
+					TelaVisualizarArquivo frame = new TelaVisualizarArquivo();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +62,7 @@ public class TelaVisualizarTrabalho extends JFrame {
 	 * @throws RepositorioException 
 	 * @throws ArquivoInexistente 
 	 */
-	public TelaVisualizarTrabalho() throws IOException, RepositorioException, ArquivoInexistente {
+	public TelaVisualizarArquivo() throws IOException, RepositorioException, ArquivoInexistente {
 		
 		IRepositorio repo = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
 		
