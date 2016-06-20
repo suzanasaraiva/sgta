@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for osx10.9 (x86_64)
 --
--- Host: 127.0.0.1    Database: sgta
+-- Host: localhost    Database: sgta
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.13-MariaDB
+-- Server version	5.6.20
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,10 +25,10 @@ DROP TABLE IF EXISTS `agenda`;
 CREATE TABLE `agenda` (
   `id_agenda` int(11) NOT NULL,
   `id_banca` int(11) NOT NULL,
-  `data` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `data` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `id_usuario` int(11) NOT NULL,
   PRIMARY KEY (`id_agenda`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,9 +50,10 @@ DROP TABLE IF EXISTS `arquivos`;
 CREATE TABLE `arquivos` (
   `id_arquivo` int(11) NOT NULL,
   `id_aluno` int(11) NOT NULL,
-  `file` tinyblob NOT NULL,
+  `file` longblob NOT NULL,
+  `nome_arquivo` varchar(45) NOT NULL,
   PRIMARY KEY (`id_arquivo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,9 +77,9 @@ CREATE TABLE `banca` (
   `id_trabalho` int(11) NOT NULL,
   `id_orientador` int(11) NOT NULL,
   `id_aluno` int(11) NOT NULL,
-  `data_defesa` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `data_defesa` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id_banca`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +105,7 @@ CREATE TABLE `convites` (
   `tipo_convite` varchar(255) NOT NULL,
   `id_trabalho` int(11) NOT NULL,
   PRIMARY KEY (`id_convite`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +132,7 @@ CREATE TABLE `mensagens` (
   `mensagem` varchar(255) NOT NULL,
   `isRead` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_Mensagens`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +141,7 @@ CREATE TABLE `mensagens` (
 
 LOCK TABLES `mensagens` WRITE;
 /*!40000 ALTER TABLE `mensagens` DISABLE KEYS */;
-INSERT INTO `mensagens` VALUES (1,0,0,'Mensagem','que envia',0);
+INSERT INTO `mensagens` VALUES (1,0,0,'Mensagem','que envia',1),(2,1,0,'Colé','e aew, passando aqui pra deixar uma msg. blz?',1),(3,1,0,'Testar mensagem nova','mensagem nova bold.',1),(4,0,1,'RE: Testar mensagem nova','Essa é uma mesnagem pra mostrar que o responder também funciona',1);
 /*!40000 ALTER TABLE `mensagens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,10 +160,10 @@ CREATE TABLE `oportunidades` (
   `descriçao` varchar(255) NOT NULL,
   `tipo_de_bolsa` varchar(255) NOT NULL,
   `valor_da_bolsa` int(11) NOT NULL,
-  `duração` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `duração` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `requisitos` varchar(255) NOT NULL,
   PRIMARY KEY (`id_oportunidade`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +185,7 @@ DROP TABLE IF EXISTS `orientador_trabalhos`;
 CREATE TABLE `orientador_trabalhos` (
   `id_usuario` int(11) NOT NULL,
   `id_trabalho` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,10 +211,10 @@ CREATE TABLE `publicacoes` (
   `categoria` varchar(255) NOT NULL,
   `requisitos` varchar(255) NOT NULL,
   `qualis` varchar(255) NOT NULL,
-  `data_submissao` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
-  `data_evento` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `data_submissao` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `data_evento` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id_publicacao`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +237,7 @@ CREATE TABLE `resultados` (
   `id_resultado` int(11) NOT NULL,
   `id_trabalho` int(11) NOT NULL,
   PRIMARY KEY (`id_resultado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +259,7 @@ DROP TABLE IF EXISTS `trabalho_arquivos`;
 CREATE TABLE `trabalho_arquivos` (
   `id_trabalho` int(11) NOT NULL,
   `id_arquivo` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -283,7 +284,7 @@ CREATE TABLE `trabalhos` (
   `id_usuario` int(11) NOT NULL,
   `assunto` varchar(255) NOT NULL,
   PRIMARY KEY (`id_trabalho`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,10 +312,10 @@ CREATE TABLE `usuarios` (
   `email` varchar(253) NOT NULL,
   `tipo` varchar(255) NOT NULL,
   PRIMARY KEY (`id`,`Matricula`,`CPF`,`email`),
-  UNIQUE KEY `Matricula` (`Matricula`) USING HASH,
-  UNIQUE KEY `CPF` (`CPF`) USING HASH,
-  UNIQUE KEY `email` (`email`) USING HASH
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `Matricula` (`Matricula`),
+  UNIQUE KEY `CPF` (`CPF`),
+  UNIQUE KEY `email` (`email`)
+);
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +324,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (0,'Luiz','senhamassa','082.323.434-78','082.323.434-78','luiz@gmail.com','Aluno');
+INSERT INTO `usuarios` VALUES (0,'Luiz','senhamassa','082.323.434-78','082.323.434-78','luiz@gmail.com','Aluno'),(1,'suh','senhamassa','096.991.834-89','082.323.434-79','suh@gmail.com','Aluno');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -336,4 +337,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-14 22:52:05
+-- Dump completed on 2016-06-20  0:14:03

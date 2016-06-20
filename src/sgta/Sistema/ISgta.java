@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import sgta.Repositorio.ArquivoInexistente;
 import sgta.Repositorio.DuplicatedUserException;
 import sgta.Repositorio.NaoExisteMensagensException;
+import sgta.Repositorio.NaoExisteTrabalhoException;
 import sgta.Repositorio.RepositorioException;
 import sgta.Repositorio.UsuarioInexistente;
 
@@ -17,6 +19,8 @@ public interface ISgta {
 	void adicionarProfessor(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException;
 
 	void adicionarAdministrador(int id, String nome, String cpf, String senha, String email, String matricula) throws DuplicatedUserException, RepositorioException;
+	
+	ArrayList<Usuario> buscarUsuariosPorNome(String nome) throws RepositorioException, UsuarioInexistente;
 	
 	Usuario buscarUsuarioPorID(int id) throws RepositorioException, UsuarioInexistente;
 	
@@ -53,5 +57,13 @@ public interface ISgta {
 	
 	boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException;
 	
+	ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo) throws RepositorioException, NaoExisteTrabalhoException;
+
+	ArrayList<Trabalho> buscarTrabalhoAutor(int idUsuario) throws RepositorioException, NaoExisteTrabalhoException;
+
+	ArrayList<Trabalho> buscarTrabalhoTema(String tema) throws RepositorioException, NaoExisteTrabalhoException;
+	
 	boolean adicionarArquivo(Arquivo arquivo, int idTrabalho) throws FileNotFoundException, RepositorioException;
+	
+	ArrayList<Arquivo> buscarArquivosPorIDTrabalho(int id) throws RepositorioException, IOException, ArquivoInexistente;
 }

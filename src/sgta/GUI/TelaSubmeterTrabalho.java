@@ -42,6 +42,7 @@ public class TelaSubmeterTrabalho extends JFrame {
 	private TextField textFieldPath;
 	private TextField textFieldTitulo;
 	private TextField textFieldTema;
+	private String fileNameTemp;
 	
 	/**
 	 * Launch the application.
@@ -78,12 +79,16 @@ public class TelaSubmeterTrabalho extends JFrame {
 				String area = textFieldTema.getText();
 				int idUsuario = Sgta.usuario.getIdUsuario();
 				
+				if(titulo.isEmpty() || area.isEmpty() || textFieldPath.getText().isEmpty()) {
+					Message.infoBox("Por favor, preencha todos os campos!", "Erro");
+				}
+				
 				ISgta sgta;
 				try {
 					sgta = Sgta.getInstance();
 					Trabalho trabalho = new Trabalho(sgta.proximoTrabalhoId(), titulo, area, idUsuario);
 					File file = new File(textFieldPath.getText());
-					Arquivo arquivo = new Arquivo(sgta.proximoArquivoId(), idUsuario, file);
+					Arquivo arquivo = new Arquivo(sgta.proximoArquivoId(), idUsuario, file, fileNameTemp);
 					
 					sgta.adicionarTrabalho(trabalho);
 					sgta.adicionarArquivo(arquivo, trabalho.getIdTrabalho());
@@ -153,6 +158,7 @@ public class TelaSubmeterTrabalho extends JFrame {
 			    	String fileName = c.getSelectedFile().getName();
 			    	if (fileName.toLowerCase().endsWith("pdf")) {
 			    		textFieldPath.setText(filePath + "/" + fileName);
+			    		fileNameTemp = fileName;
 			    	} else {
 			    		Message.infoBox("Por favor, escolha um arquivo PDF", "Erro");
 			    	}

@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import sgta.Repositorio.ArquivoInexistente;
 import sgta.Repositorio.DuplicatedUserException;
 import sgta.Repositorio.IRepositorio;
 import sgta.Repositorio.NaoExisteMensagensException;
+import sgta.Repositorio.NaoExisteTrabalhoException;
 import sgta.Repositorio.Repositorio;
 import sgta.Repositorio.RepositorioException;
 import sgta.Repositorio.UsuarioInexistente;
@@ -99,6 +101,11 @@ public class Sgta implements ISgta {
 	public Usuario buscarUsuarioPorEmail(String email) throws RepositorioException, UsuarioInexistente {
 		return repositorio.buscarEmail(email);
 	}
+	
+	@Override
+	public ArrayList<Usuario> buscarUsuariosPorNome(String nome) throws RepositorioException, UsuarioInexistente {
+		return repositorio.buscarNome(nome);
+	}
 
 	@Override
 	public void adicionarMensagem(Mensagem mensagem) throws RepositorioException {
@@ -185,6 +192,29 @@ public class Sgta implements ISgta {
 	public boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException {
 		repositorio.adicionarTrabalho(trabalho);
 		return true;
+	}
+
+	@Override
+	public ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo)
+			throws RepositorioException, NaoExisteTrabalhoException {
+		return repositorio.buscarTrabalhoTitulo(titulo);
+	}
+
+	@Override
+	public ArrayList<Trabalho> buscarTrabalhoAutor(int idUsuario)
+			throws RepositorioException, NaoExisteTrabalhoException {
+		return repositorio.buscarTrabalhoAutor(idUsuario);
+	}
+
+	@Override
+	public ArrayList<Trabalho> buscarTrabalhoTema(String tema) throws RepositorioException, NaoExisteTrabalhoException {
+		return repositorio.buscarTrabalhoTema(tema);
+	}
+
+	@Override
+	public ArrayList<Arquivo> buscarArquivosPorIDTrabalho(int id)
+			throws RepositorioException, IOException, ArquivoInexistente {
+		return repositorio.buscarArquivosPorIDTrabalho(id);
 	}
 
 }

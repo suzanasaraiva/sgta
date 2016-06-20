@@ -82,7 +82,7 @@ public class Repositorio implements IRepositorio {
 		if (re.size() == 0) {
 			return 0;
 		} else {
-			return re.get(0).getIdArquivos() + 1;
+			return re.get(0).getIdArquivo() + 1;
 		}
 	}
 
@@ -160,15 +160,17 @@ public class Repositorio implements IRepositorio {
 				
 				int id_aluno = rs.getInt("id_aluno");
 				
+				String fileName = rs.getString("nome_arquivo");
+				
 				InputStream binaryStream = rs.getBinaryStream("file");
 				
-				File tempFile = File.createTempFile("pdfFile" + id_aluno, "pdf");
+				File tempFile = File.createTempFile(fileName.replace(".pdf", ""), "pdf");
 			    tempFile.deleteOnExit();
 			    
 				FileOutputStream out = new FileOutputStream(tempFile);
 				IOUtils.copy(binaryStream, out);
 				
-				res.add(new Arquivo(idArquivo, id_aluno, tempFile));
+				res.add(new Arquivo(idArquivo, id_aluno, tempFile, fileName));
 			}
 			return res;
 		} catch (SQLException e) {
@@ -217,9 +219,13 @@ public class Repositorio implements IRepositorio {
 	}
 
 	@Override
-	public ArrayList<Usuario> buscarNome(String nome) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Usuario> buscarNome(String nome) throws UsuarioInexistente, RepositorioException {
+		ArrayList<Usuario> results = buscarSQL("SELECT * FROM  usuarios WHERE Nome Like '" + nome + "'");
+		if (results.size() < 1) { 
+			throw new UsuarioInexistente();
+		}
+		
+		return results;
 	}
 
 	@Override
@@ -253,21 +259,33 @@ public class Repositorio implements IRepositorio {
 	}
 
 	@Override
-	public ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo) throws RepositorioException, NaoExisteTrabalhoException {
+		ArrayList<Trabalho> results = buscarSQLTrabalho("SELECT * FROM trabalhos WHERE titulo Like '" + titulo + "'");
+		if (results.size() < 1) { 
+			throw new NaoExisteTrabalhoException();
+		}
+		
+		return results;
 	}
 
 	@Override
-	public ArrayList<Trabalho> buscarTrabalhoAutor(String idUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Trabalho> buscarTrabalhoAutor(int idUsuario) throws RepositorioException, NaoExisteTrabalhoException {
+		ArrayList<Trabalho> results = buscarSQLTrabalho("SELECT * FROM trabalhos WHERE id_usuario Like '" + idUsuario + "'");
+		if (results.size() < 1) { 
+			throw new NaoExisteTrabalhoException();
+		}
+
+		return results;
 	}
 
 	@Override
-	public ArrayList<Trabalho> buscarTrabalhoTema(String tema) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Trabalho> buscarTrabalhoTema(String tema) throws RepositorioException, NaoExisteTrabalhoException {
+		ArrayList<Trabalho> results = buscarSQLTrabalho("SELECT * FROM trabalhos WHERE assunto Like '" + tema + "'");
+		if (results.size() < 1) { 
+			throw new NaoExisteTrabalhoException();
+		}
+		
+		return results;
 	}
 
 	@Override
@@ -352,14 +370,15 @@ public class Repositorio implements IRepositorio {
 		
 		FileInputStream fis = new FileInputStream(file);
 		
-		String query = "INSERT INTO arquivos (id_arquivo, id_aluno, file)" + "VALUES (?, ?, ?)";
+		String query = "INSERT INTO arquivos (id_arquivo, id_aluno, file, nome_arquivo)" + "VALUES (?, ?, ?, ?)";
 		
 		PreparedStatement pstm;
 		try {
 			pstm = (PreparedStatement) this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			pstm.setInt(1, arquivo.idArquivo);
-			pstm.setInt(2, arquivo.idAluno);
+			pstm.setInt(1, arquivo.getIdArquivo());
+			pstm.setInt(2, arquivo.getIdAluno());
 			pstm.setBinaryStream(3, fis, (int)file.length());
+			pstm.setString(4, arquivo.getFileName());
 			pstm.execute();
 			pstm.close();
 			
@@ -368,6 +387,7 @@ public class Repositorio implements IRepositorio {
 			
 			stm.executeUpdate(queryLinkTrabalho);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new RepositorioException();
 		}
 		return true;
@@ -382,6 +402,28 @@ public class Repositorio implements IRepositorio {
 		}
 		
 		return results.get(0);
+	}
+	
+	@Override
+	public ArrayList<Arquivo> buscarArquivosPorIDTrabalho(int id) throws RepositorioException, IOException, ArquivoInexistente {
+
+		ArrayList<Arquivo> results = new ArrayList<Arquivo>();
+		try {
+			rs = stm.executeQuery("SELECT * FROM trabalho_arquivos WHERE id_trabalho Like '" + id + "'");
+			while (rs.next()) {
+				results.addAll(buscarSQLArquivo("SELECT * FROM arquivos WHERE id_arquivo Like '" + rs.getInt("id_arquivo") + "'"));
+			}
+
+			if (results.size() < 1) {
+				throw new ArquivoInexistente();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+		
+		return results;
 	}
 
 	@Override

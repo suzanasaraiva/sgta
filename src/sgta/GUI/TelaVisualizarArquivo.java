@@ -16,6 +16,7 @@ import sgta.Repositorio.IRepositorio;
 import sgta.Repositorio.Repositorio;
 import sgta.Repositorio.RepositorioException;
 import sgta.Sistema.Arquivo;
+import sgta.Sistema.Trabalho;
 import sgta.util.ImageHelper;
 
 import javax.swing.JLabel;
@@ -39,22 +40,8 @@ public class TelaVisualizarArquivo extends JFrame {
 	private JButton backward;
 	private JButton fastBackward;
 	private JButton fastForward;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TelaVisualizarArquivo frame = new TelaVisualizarArquivo();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JButton btnVoltar;
+	private Trabalho trabalho;
 
 	/**
 	 * Create the frame.
@@ -62,13 +49,9 @@ public class TelaVisualizarArquivo extends JFrame {
 	 * @throws RepositorioException 
 	 * @throws ArquivoInexistente 
 	 */
-	public TelaVisualizarArquivo() throws IOException, RepositorioException, ArquivoInexistente {
-		
-		IRepositorio repo = new Repositorio("jdbc:mysql://localhost:3306/sgta", "root", "senha");
-		
+	public TelaVisualizarArquivo(Arquivo arquivo) throws IOException, RepositorioException, ArquivoInexistente {
+
 		this.currentPage = 0;
-		
-		Arquivo arquivo = repo.buscarArquivoPorID(5);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 650, 780);
@@ -163,9 +146,26 @@ public class TelaVisualizarArquivo extends JFrame {
 		fastForward.setBounds(458, 713, 56, 29);
 		contentPane.add(fastForward);
 		
+		btnVoltar = new JButton("Voltar");
+		btnVoltar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaArquivosTrabalho tela = new TelaArquivosTrabalho();
+				tela.setTrabalho(trabalho);
+				tela.carregarList();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
+		btnVoltar.setBounds(526, 713, 117, 29);
+		contentPane.add(btnVoltar);
+		
 		this.updatePageCounter();
 	}
 	
+	public void setTrabalho(Trabalho trabalho) {
+		this.trabalho = trabalho;
+	}
+
 	private void updatePageCounter() {
 		pageCounter.setText((this.currentPage + 1) + "/" + this.numberPages);
 		if (this.currentPage + 1 == this.numberPages) {

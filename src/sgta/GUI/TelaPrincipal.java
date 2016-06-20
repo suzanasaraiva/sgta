@@ -105,6 +105,13 @@ public class TelaPrincipal extends JFrame {
 		mnTrabalhos.add(mntmSubmeter);
 		
 		JMenuItem mntmBuscar = new JMenuItem("Buscar");
+		mntmBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TelaBuscarTrabalhos tela = new TelaBuscarTrabalhos();
+				tela.setVisible(true);
+				dispose();
+			}
+		});
 		mnTrabalhos.add(mntmBuscar);
 		
 		JMenu mnPublicar = new JMenu("Publicar");

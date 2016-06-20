@@ -20,23 +20,23 @@ public interface IRepositorio {
 
 	boolean atualizar(int id, Usuario Usuario);
 
-	ArrayList<Usuario> buscarNome(String nome);
-
 	Usuario buscarId(int id) throws RepositorioException, UsuarioInexistente;
 
 	Usuario buscarCPF(String cpf) throws RepositorioException, UsuarioInexistente;
 	
 	Usuario buscarEmail(String email) throws RepositorioException, UsuarioInexistente;
 	
+	ArrayList<Usuario> buscarNome(String nome) throws RepositorioException, UsuarioInexistente;
+	
 	boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException;
 
 	boolean removerTrabalho(int id);
 
-	ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo);
+	ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo) throws RepositorioException, NaoExisteTrabalhoException;
 
-	ArrayList<Trabalho> buscarTrabalhoAutor(String idUsuario);
+	ArrayList<Trabalho> buscarTrabalhoAutor(int idUsuario) throws RepositorioException, NaoExisteTrabalhoException;
 
-	ArrayList<Trabalho> buscarTrabalhoTema(String tema);
+	ArrayList<Trabalho> buscarTrabalhoTema(String tema) throws RepositorioException, NaoExisteTrabalhoException;
 
 	ArrayList<Trabalho> buscarTrabalho();
 
@@ -65,6 +65,8 @@ public interface IRepositorio {
 	boolean adicionarArquivo(Arquivo arquivo, int idTrabalho) throws FileNotFoundException, RepositorioException;
 	
 	Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException, ArquivoInexistente;
+	
+	ArrayList<Arquivo> buscarArquivosPorIDTrabalho(int id) throws RepositorioException, IOException, ArquivoInexistente;
 
 	boolean marcarLido(int id) throws RepositorioException;	
 }
