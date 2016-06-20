@@ -1,6 +1,7 @@
 package sgta.Sistema;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -29,6 +30,10 @@ public interface ISgta {
 	
 	int proximoMensagemId() throws RepositorioException;
 	
+	int proximoTrabalhoId() throws RepositorioException;
+	
+	int proximoArquivoId() throws RepositorioException, IOException;
+	
 	int quantitadeMensagens() throws RepositorioException;
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario() throws RepositorioException;
@@ -45,8 +50,8 @@ public interface ISgta {
 	void recuperarId(String cpf) throws Throwable;
 	
 	void marcarLido(int id) throws RepositorioException;
-
-//	void adicionarArquivo(String arq) throws FileNotFoundException, SQLException;
-
 	
+	boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException;
+	
+	boolean adicionarArquivo(Arquivo arquivo, int idTrabalho) throws FileNotFoundException, RepositorioException;
 }

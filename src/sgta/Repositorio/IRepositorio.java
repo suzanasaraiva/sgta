@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import sgta.Sistema.Arquivo;
 import sgta.Sistema.Mensagem;
 import sgta.Sistema.Oportunidades;
-import sgta.Sistema.Trabalhos;
+import sgta.Sistema.Trabalho;
 import sgta.Sistema.Usuario;
 
 public interface IRepositorio {
@@ -27,24 +27,28 @@ public interface IRepositorio {
 	Usuario buscarCPF(String cpf) throws RepositorioException, UsuarioInexistente;
 	
 	Usuario buscarEmail(String email) throws RepositorioException, UsuarioInexistente;
-
-	boolean adicionarTrabalho(Trabalhos trabalho);
+	
+	boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException;
 
 	boolean removerTrabalho(int id);
 
-	ArrayList<Trabalhos> buscarTrabalhoTitulo(String titulo);
+	ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo);
 
-	ArrayList<Trabalhos> buscarTrabalhoAutor(String idUsuario);
+	ArrayList<Trabalho> buscarTrabalhoAutor(String idUsuario);
 
-	ArrayList<Trabalhos> buscarTrabalhoTema(String tema);
+	ArrayList<Trabalho> buscarTrabalhoTema(String tema);
 
-	ArrayList<Trabalhos> buscarTrabalho();
+	ArrayList<Trabalho> buscarTrabalho();
 
 	boolean adicionarMensagem(Mensagem mensagem) throws RepositorioException;
 
 	public int proximoId() throws RepositorioException;
 	
 	public int proximoMensagemId() throws RepositorioException;
+	
+	public int proximoTrabalhoId() throws RepositorioException;
+	
+	public int proximoArquivoId() throws RepositorioException, IOException;
 	
 	ArrayList<Mensagem> buscarMensagensDestinatario(int idDestinatario) throws RepositorioException, NaoExisteMensagensException;
 
@@ -58,9 +62,9 @@ public interface IRepositorio {
 	
 	int recuperarId(String id) throws Throwable;
 
-	boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException;
-
-	Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException;
+	boolean adicionarArquivo(Arquivo arquivo, int idTrabalho) throws FileNotFoundException, RepositorioException;
+	
+	Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException, ArquivoInexistente;
 
 	boolean marcarLido(int id) throws RepositorioException;	
 }

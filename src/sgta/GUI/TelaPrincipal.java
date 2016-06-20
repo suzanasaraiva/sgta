@@ -97,16 +97,9 @@ public class TelaPrincipal extends JFrame {
 		JMenuItem mntmSubmeter = new JMenuItem("Submeter");
 		mntmSubmeter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				TelaSubmeterArquivo telasubmeter = null;
-//				try {
-//					telasubmeter = new TelaSubmeterArquivo();
-//				} catch (InicializacaoSistemaException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//				telasubmeter.setVisible(true);
-//				dispose();
-			
+				TelaSubmeterTrabalho tela = new TelaSubmeterTrabalho();
+				tela.setVisible(true);
+				dispose();			
 			}
 		});
 		mnTrabalhos.add(mntmSubmeter);

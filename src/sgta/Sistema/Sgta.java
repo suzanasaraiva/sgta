@@ -1,6 +1,7 @@
 package sgta.Sistema;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -31,14 +32,6 @@ public class Sgta implements ISgta {
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
-			ISgta i = Sgta.getInstance();
-		} catch (InicializacaoSistemaException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static ISgta getInstance() throws InicializacaoSistemaException {
 		if (Sgta.instance == null) {
 			try {
@@ -59,6 +52,16 @@ public class Sgta implements ISgta {
 	@Override
 	public int proximoMensagemId() throws RepositorioException {
 		return repositorio.proximoMensagemId();
+	}
+	
+	@Override
+	public int proximoTrabalhoId() throws RepositorioException {
+		return repositorio.proximoTrabalhoId();
+	}
+	
+	@Override
+	public int proximoArquivoId() throws RepositorioException, IOException {
+		return repositorio.proximoArquivoId();
 	}
 
 	@Override
@@ -170,6 +173,18 @@ public class Sgta implements ISgta {
 			Message.infoBox("Voce nao envior nenhuma mensagem", "Erro");
 		}
 		return resultado;
+	}
+
+	@Override
+	public boolean adicionarArquivo(Arquivo arquivo, int idTrabalho) throws FileNotFoundException, RepositorioException {
+		repositorio.adicionarArquivo(arquivo, idTrabalho);
+		return true;
+	}
+
+	@Override
+	public boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException {
+		repositorio.adicionarTrabalho(trabalho);
+		return true;
 	}
 
 }

@@ -1,6 +1,6 @@
 package sgta.Repositorio;
 
-import sgta.Sistema.Trabalhos;
+import sgta.Sistema.Trabalho;
 import sgta.Sistema.Usuario;
 import sgta.Sistema.Aluno;
 import sgta.Sistema.Arquivo;
@@ -65,6 +65,26 @@ public class Repositorio implements IRepositorio {
 			return re.get(0).getIdMenasagem() + 1;
 		}
 	}
+	
+	@Override
+	public int proximoTrabalhoId() throws RepositorioException {
+		ArrayList<Trabalho> re = buscarSQLTrabalho("SELECT * FROM trabalhos ORDER BY id_trabalho DESC");
+		if (re.size() == 0) {
+			return 0;
+		} else {
+			return re.get(0).getIdTrabalho() + 1;
+		}
+	}
+	
+	@Override
+	public int proximoArquivoId() throws RepositorioException, IOException {
+		ArrayList<Arquivo> re = buscarSQLArquivo("SELECT * FROM arquivos ORDER BY id_arquivo DESC");
+		if (re.size() == 0) {
+			return 0;
+		} else {
+			return re.get(0).getIdArquivos() + 1;
+		}
+	}
 
 	@Override
 	public int proximoOportunidadeId() throws RepositorioException {
@@ -108,6 +128,47 @@ public class Repositorio implements IRepositorio {
 			while (rs.next()) {
 				res.add(new Mensagem(rs.getInt("id_Mensagens"), rs.getInt("id_Remetente"), rs.getInt("id_Destinatario"),
 						rs.getString("assunto"), rs.getString("mensagem"), rs.getInt("isRead") == 1));
+			}
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+	}
+	
+	private ArrayList<Trabalho> buscarSQLTrabalho(String query) throws RepositorioException {
+		ArrayList<Trabalho> res = new ArrayList<Trabalho>();
+		try {
+			rs = stm.executeQuery(query);
+			while (rs.next()) {
+				res.add(new Trabalho(rs.getInt("id_trabalho"), rs.getString("titulo"), rs.getString("assunto"), rs.getInt("id_usuario")));
+			}
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+	}
+	
+	private ArrayList<Arquivo> buscarSQLArquivo(String query) throws RepositorioException, IOException {
+		ArrayList<Arquivo> res = new ArrayList<Arquivo>();
+		try {
+			rs = stm.executeQuery(query);
+			while (rs.next()) {
+				
+				int idArquivo = rs.getInt("id_arquivo");
+				
+				int id_aluno = rs.getInt("id_aluno");
+				
+				InputStream binaryStream = rs.getBinaryStream("file");
+				
+				File tempFile = File.createTempFile("pdfFile" + id_aluno, "pdf");
+			    tempFile.deleteOnExit();
+			    
+				FileOutputStream out = new FileOutputStream(tempFile);
+				IOUtils.copy(binaryStream, out);
+				
+				res.add(new Arquivo(idArquivo, id_aluno, tempFile));
 			}
 			return res;
 		} catch (SQLException e) {
@@ -172,9 +233,17 @@ public class Repositorio implements IRepositorio {
 	}
 
 	@Override
-	public boolean adicionarTrabalho(Trabalhos trabalho) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean adicionarTrabalho(Trabalho trabalho) throws RepositorioException {
+		try {
+			stm.executeUpdate("INSERT INTO trabalhos (id_trabalho, titulo, id_usuario, assunto) VALUES" + "('"
+					+ trabalho.getIdTrabalho() + "', '" + trabalho.getTitulo() + "', '" + trabalho.getIdUsuario() 
+					+ "', '" + trabalho.getArea() + "')");
+		}  catch (SQLException e) {
+			e.printStackTrace();
+			throw new RepositorioException();
+		}
+		
+		return true;
 	}
 
 	@Override
@@ -184,25 +253,25 @@ public class Repositorio implements IRepositorio {
 	}
 
 	@Override
-	public ArrayList<Trabalhos> buscarTrabalhoTitulo(String titulo) {
+	public ArrayList<Trabalho> buscarTrabalhoTitulo(String titulo) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Trabalhos> buscarTrabalhoAutor(String idUsuario) {
+	public ArrayList<Trabalho> buscarTrabalhoAutor(String idUsuario) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Trabalhos> buscarTrabalhoTema(String tema) {
+	public ArrayList<Trabalho> buscarTrabalhoTema(String tema) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Trabalhos> buscarTrabalho() {
+	public ArrayList<Trabalho> buscarTrabalho() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -277,7 +346,7 @@ public class Repositorio implements IRepositorio {
 		return id;
 	}
 	
-	public boolean adicionarArquivo(Arquivo arquivo) throws FileNotFoundException, SQLException {
+	public boolean adicionarArquivo(Arquivo arquivo, int idTrabalho) throws FileNotFoundException, RepositorioException {
 		
 		File file = arquivo.getFile();
 		
@@ -285,40 +354,34 @@ public class Repositorio implements IRepositorio {
 		
 		String query = "INSERT INTO arquivos (id_arquivo, id_aluno, file)" + "VALUES (?, ?, ?)";
 		
-		PreparedStatement pstm = (PreparedStatement) this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-		
-		pstm.setInt(1, arquivo.idArquivos);
-		pstm.setInt(2, arquivo.idAluno);
-		pstm.setBinaryStream(3, fis, (int)file.length());
-		pstm.execute();
-		pstm.close();
-		
+		PreparedStatement pstm;
+		try {
+			pstm = (PreparedStatement) this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			pstm.setInt(1, arquivo.idArquivo);
+			pstm.setInt(2, arquivo.idAluno);
+			pstm.setBinaryStream(3, fis, (int)file.length());
+			pstm.execute();
+			pstm.close();
+			
+			String queryLinkTrabalho =  "INSERT INTO trabalho_arquivos (id_trabalho, id_arquivo) VALUES" +
+					"(" + idTrabalho +  ", '" + arquivo.idArquivo + "')";
+			
+			stm.executeUpdate(queryLinkTrabalho);
+		} catch (SQLException e) {
+			throw new RepositorioException();
+		}
 		return true;
 	}
 
 	@Override
-	public Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException {
-		Arquivo res = null;
-		try {
-			
-			rs = stm.executeQuery("SELECT * FROM arquivos WHERE id_arquivo Like '" + id + "'");
-			while(rs.next()) {
-				int id_aluno = rs.getInt("id_aluno");
-				
-				InputStream binaryStream = rs.getBinaryStream("file");
-				
-				File tempFile = File.createTempFile("pdfFile", "pdf");
-			    tempFile.deleteOnExit();
-				FileOutputStream out = new FileOutputStream(tempFile);
-				IOUtils.copy(binaryStream, out);
-				   
-				res = new Arquivo(id, id_aluno, tempFile);
-			}
-			return res;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new RepositorioException();
+	public Arquivo buscarArquivoPorID(int id) throws RepositorioException, IOException, ArquivoInexistente {
+		ArrayList<Arquivo> results = buscarSQLArquivo("SELECT * FROM arquivos WHERE id_arquivo Like '" + id + "'");
+		
+		if (results.size() < 1) {
+			throw new ArquivoInexistente();
 		}
+		
+		return results.get(0);
 	}
 
 	@Override

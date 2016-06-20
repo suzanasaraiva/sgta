@@ -4,12 +4,12 @@ import java.io.File;
 
 public class Arquivo {
 	
-	public final int idArquivos;
+	public final int idArquivo;
 	public final int idAluno;
 	protected File file;
 	
 	public Arquivo(int idArquivos, int idAluno, File file) {
-		this.idArquivos = idArquivos;
+		this.idArquivo = idArquivos;
 		this.idAluno = idAluno;
 		this.file = file;
 	}
@@ -23,7 +23,7 @@ public class Arquivo {
 	}
 
 	public int getIdArquivos() {
-		return idArquivos;
+		return idArquivo;
 	}
 
 	public int getIdAluno() {
